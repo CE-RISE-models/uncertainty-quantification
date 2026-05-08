@@ -2,7 +2,7 @@
 
 All notable changes to the CE-RISE Uncertainty Quantification Data Model will be documented in this file.
 
-## [0.0.1] - unreleased
+## [0.0.1] - 2026-05-08
 
 ### Added
 - Initial project structure for the CE-RISE Uncertainty Quantification Data Model

@@ -54,10 +54,7 @@ jobs:
                   import os
 
                   # Default values
-                  repo_slug = 'CE-RISE-models/uncertainty-quantification'
-                  repo_name = os.environ.get('GITHUB_REPOSITORY', repo_slug)
-                  if not repo_name or repo_name == 'organization/repository':
-                      repo_name = repo_slug
+                  repo_name = os.environ.get('GITHUB_REPOSITORY', 'organization/repository')
                   project_title = repo_name.split('/')[-1].replace('-', ' ').title() if repo_name else "Data Model"
                   project_description = f"LinkML Data Model for {project_title}"
                   repo_url = f"https://codeberg.org/{repo_name}"
@@ -68,14 +65,10 @@ jobs:
                           citation = yaml.safe_load(f)
                           project_title = citation.get('title', project_title)
                           project_description = citation.get('abstract', project_description)
-                          citation_repo_url = citation.get('repository-code')
-                          if citation_repo_url and 'template-data-model' not in citation_repo_url:
-                              repo_url = citation_repo_url
+                          if 'repository-code' in citation:
+                              repo_url = citation['repository-code']
                   except Exception:
                       pass
-
-                  if 'template-data-model' in repo_url:
-                      repo_url = f"https://codeberg.org/{repo_slug}"
 
                   # Try to extract from model/model.yaml as fallback
                   try:

@@ -1,6 +1,6 @@
 {
-  "title": "Project template for data models developed within the CE-RISE Horizon Europe project",
-  "description": "Project template for data models developed within the CE-RISE Horizon Europe project.",
+  "title": "CE-RISE Uncertainty Quantification Data Model",
+  "description": "Cross-cutting LinkML data model for representing uncertainty statements, uncertainty budgets, probability distributions, coverage intervals, propagation analyses, and comparison metadata in CE-RISE Digital Product Passport and Digital Material Passport records.",
   "license": "CC-BY-NC-4.0",
   "upload_type": "software",
   "creators": [
@@ -14,9 +14,13 @@
     "CE-RISE",
     "Data Model",
     "Ontology",
+    "Uncertainty Quantification",
+    "Measurement Uncertainty",
+    "Metrology",
     "Open Source",
     "Open Science",
-    "Digital Product Passport"
+    "Digital Product Passport",
+    "Digital Material Passport"
   ],
   "communities": [
     { "identifier": "ce-rise" },
@@ -27,7 +31,7 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "https://codeberg.org/CE-RISE_models/template-data-model",
+      "identifier": "https://codeberg.org/CE-RISE-models/uncertainty-quantification",
       "relation": "isSupplementTo",
       "resource_type": "software"
     }

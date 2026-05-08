@@ -1,6 +1,6 @@
 # CE-RISE Uncertainty Quantification Data Model
 
-[![DOI](https://zenodo.org/badge/DOI/TOBEOBTAINED.svg)](https://doi.org/TOBEOBTAINED) [![Schemas](https://img.shields.io/badge/Schema%20Files-LinkML%2C%20JSON%2C%20SHACL%2C%20OWL-32CD32)](https://ce-rise-models.codeberg.page/uncertainty-quantification/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20084514.svg)](https://doi.org/10.5281/zenodo.20084514) [![Schemas](https://img.shields.io/badge/Schema%20Files-LinkML%2C%20JSON%2C%20SHACL%2C%20OWL-32CD32)](https://ce-rise-models.codeberg.page/uncertainty-quantification/)
 
 This repository defines the CE-RISE cross-cutting data model for uncertainty quantification.
 It provides generic structures for representing uncertainty in measurements, assessments,

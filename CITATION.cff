@@ -8,6 +8,10 @@ authors:
     email: ribo@nilu.no
     orcid: 'https://orcid.org/0000-0002-7468-9096'
     affiliation: NILU
+  - given-names: Matthias
+    family-names: Rösslein
+    email: Matthias.Roesslein@empa.ch
+    affiliation: EMPA
 identifiers:
   - type: doi
     value: xxx_to_be_obtained_xxx

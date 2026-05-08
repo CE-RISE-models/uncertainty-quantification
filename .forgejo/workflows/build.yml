@@ -20,18 +20,17 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            - name: Setup Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: "3.11"
-
-            - name: Install dependencies
+            - name: Prepare Python environment
               run: |
+                  python3 --version
+                  python3 -m venv .venv
+                  . .venv/bin/activate
                   python -m pip install --upgrade pip
                   python -m pip install linkml pyyaml
 
             - name: Generate schema files
               run: |
+                  . .venv/bin/activate
                   echo "Generating schema files..."
                   make all
                   echo "Generated files:"
@@ -47,8 +46,9 @@ jobs:
 
             - name: Extract project metadata
               run: |
+                  . .venv/bin/activate
                   echo "Extracting metadata from repository..."
-                  python3 << 'EOF' > set_env.sh
+                  python << 'EOF' > set_env.sh
                   import yaml
                   import json
                   import os

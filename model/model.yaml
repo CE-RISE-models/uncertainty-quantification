@@ -6,7 +6,7 @@ description: >
     probability distributions, propagation analyses, and comparison-relevant uncertainty metadata
     for CE-RISE Digital Product Passport and Digital Material Passport data models.
 license: CC BY-NC 4.0
-version: 0.0.1
+version: 0.0.2
 
 prefixes:
     linkml: https://w3id.org/linkml/
@@ -68,77 +68,77 @@ slots:
             owl.filler: dcterms:modified
             sql_identifier: "uq_statement_date"
 
-    applies_to_model_value:
+    uncertainty_applies_to_model_value:
         description: "Name, URI, or namespace of the external data model to which this uncertainty statement applies"
         range: string
         annotations:
             owl.filler: uq:appliesToModelValue
             sql_identifier: "uq_applies_to_model"
 
-    applies_to_class_value:
+    uncertainty_applies_to_class_value:
         description: "Class in an external model to which this uncertainty statement applies"
         range: string
         annotations:
             owl.filler: uq:appliesToClassValue
             sql_identifier: "uq_applies_to_class"
 
-    applies_to_slot_value:
+    uncertainty_applies_to_slot_value:
         description: "Slot or attribute in an external model to which this uncertainty statement applies"
         range: string
         annotations:
             owl.filler: uq:appliesToSlotValue
             sql_identifier: "uq_applies_to_slot"
 
-    applies_to_record_value:
+    uncertainty_applies_to_record_value:
         description: "Identifier of the external record, object, dataset, or passport entry to which this uncertainty statement applies"
         range: string
         annotations:
             owl.filler: uq:appliesToRecordValue
             sql_identifier: "uq_applies_to_record"
 
-    applies_to_value_path_value:
+    uncertainty_applies_to_value_path_value:
         description: "JSONPath, XPath, RDF path, or other pointer to the value to which this uncertainty statement applies"
         range: string
         annotations:
             owl.filler: uq:appliesToValuePathValue
             sql_identifier: "uq_applies_to_value_path"
 
-    applies_to_value_identifier_value:
+    uncertainty_applies_to_value_identifier_value:
         description: "Identifier of a specific value object when the target model gives value-level identifiers"
         range: string
         annotations:
             owl.filler: uq:appliesToValueIdentifierValue
             sql_identifier: "uq_applies_to_value_identifier"
 
-    traceability_reference_value:
+    uncertainty_traceability_reference_value:
         description: "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition"
         range: string
         annotations:
             owl.filler: mt:traceabilityReference
             sql_identifier: "uq_traceability_reference"
 
-    data_quality_reference_value:
+    uncertainty_data_quality_reference_value:
         description: "Reference to a data quality assessment that informs or justifies an uncertainty contribution"
         range: string
         annotations:
             owl.filler: dqf:dataQualityReference
             sql_identifier: "uq_data_quality_reference"
 
-    evidence_reference_value:
+    uncertainty_evidence_reference_value:
         description: "Reference to supporting evidence such as a certificate, report, dataset, standard, or software record"
         range: string
         annotations:
             owl.filler: prov:wasDerivedFrom
             sql_identifier: "uq_evidence_reference_value"
 
-    standards_applied_value:
+    uncertainty_standards_applied_value:
         description: "Standard, guide, or protocol applied in the uncertainty evaluation"
         range: string
         annotations:
             owl.filler: dcterms:conformsTo
             sql_identifier: "uq_standards_applied"
 
-    statement_notes_value:
+    uncertainty_statement_notes_value:
         description: "Additional notes about the uncertainty statement"
         range: string
         annotations:
@@ -146,35 +146,35 @@ slots:
             sql_identifier: "uq_statement_notes"
 
     # Measurand and value context
-    measurand_identifier_value:
+    uncertainty_measurand_identifier_value:
         description: "Identifier for the measurand or quantity of interest"
         range: string
         annotations:
             owl.filler: dcterms:identifier
             sql_identifier: "uq_measurand_identifier"
 
-    measurand_name_value:
+    uncertainty_measurand_name_value:
         description: "Name of the measurand or quantity of interest"
         range: string
         annotations:
             owl.filler: rdfs:label
             sql_identifier: "uq_measurand_name"
 
-    measurand_description_value:
+    uncertainty_measurand_description_value:
         description: "Operational definition of the measurand, including what is measured and under which conditions"
         range: string
         annotations:
             owl.filler: skos:definition
             sql_identifier: "uq_measurand_description"
 
-    quantity_kind_value:
+    uncertainty_quantity_kind_value:
         description: "Kind of quantity being evaluated, such as mass, length, concentration, carbon footprint, or circularity indicator"
         range: string
         annotations:
             owl.filler: qudt:hasQuantityKind
             sql_identifier: "uq_quantity_kind"
 
-    quantity_unit_value:
+    uncertainty_quantity_unit_value:
         description: "Unit in which the measurand is expressed"
         range: string
         annotations:
@@ -244,7 +244,7 @@ slots:
             owl.filler: uq:referenceConditionsValue
             sql_identifier: "uq_reference_conditions"
 
-    environmental_conditions_value:
+    uncertainty_environmental_conditions_value:
         description: "Environmental or procedural conditions during data acquisition"
         range: string
         annotations:
@@ -286,7 +286,7 @@ slots:
             owl.filler: schema:value
             sql_identifier: "uq_text_value"
 
-    unit_value:
+    uncertainty_unit_value:
         description: "Unit associated with a reported result, estimate, distribution parameter, or uncertainty quantity"
         range: string
         annotations:
@@ -419,7 +419,7 @@ slots:
             owl.filler: uq:coefficientOfVariationValue
             sql_identifier: "uq_coefficient_of_variation"
 
-    uncertainty_factor_value:
+    uncertainty_component_factor_value:
         description: "Multiplicative uncertainty factor used to express a plausible range around a positive quantity"
         range: float
         annotations:
@@ -854,49 +854,49 @@ slots:
             owl.filler: dcterms:description
             sql_identifier: "uq_method_reference_description"
 
-    evidence_identifier_value:
+    uncertainty_evidence_identifier_value:
         description: "Identifier for supporting evidence"
         range: string
         annotations:
             owl.filler: dcterms:identifier
             sql_identifier: "uq_evidence_identifier"
 
-    evidence_type_value:
+    uncertainty_evidence_type_value:
         description: "Type of supporting evidence"
-        range: EvidenceTypeEnum
+        range: UncertaintyEvidenceTypeEnum
         annotations:
             owl.filler: dcterms:type
             sql_identifier: "uq_evidence_type"
 
-    evidence_url_value:
+    uncertainty_evidence_url_value:
         description: "URL for supporting evidence"
         range: uri
         annotations:
             owl.filler: schema:url
             sql_identifier: "uq_evidence_url"
 
-    evidence_description_value:
+    uncertainty_evidence_description_value:
         description: "Description of supporting evidence"
         range: string
         annotations:
             owl.filler: dcterms:description
             sql_identifier: "uq_evidence_description"
 
-    evidence_date_value:
+    uncertainty_evidence_date_value:
         description: "Date associated with supporting evidence"
         range: date
         annotations:
             owl.filler: dcterms:date
             sql_identifier: "uq_evidence_date"
 
-    evidence_provider_value:
+    uncertainty_evidence_provider_value:
         description: "Provider, author, laboratory, supplier, or organization responsible for supporting evidence"
         range: string
         annotations:
             owl.filler: prov:Agent
             sql_identifier: "uq_evidence_provider"
 
-    evidence_version_value:
+    uncertainty_evidence_version_value:
         description: "Version, edition, or revision of supporting evidence"
         range: string
         annotations:
@@ -944,9 +944,9 @@ slots:
             owl.filler: uq:methodReference
             sql_identifier: "uq_method_references"
 
-    evidence_references:
+    uncertainty_evidence_references:
         description: "Evidence records referenced by the uncertainty model"
-        range: EvidenceReference
+        range: UncertaintyEvidenceReference
         multivalued: true
         annotations:
             owl.filler: uq:evidenceReference
@@ -1075,7 +1075,7 @@ classes:
             - propagation_analyses
             - comparison_assessments
             - method_references
-            - evidence_references
+            - uncertainty_evidence_references
         annotations:
             sql_identifier: "uq_root"
 
@@ -1092,23 +1092,23 @@ classes:
             - uncertainty_statement_type_value
             - uncertainty_statement_status_value
             - uncertainty_statement_date_value
-            - applies_to_model_value
-            - applies_to_class_value
-            - applies_to_slot_value
-            - applies_to_record_value
-            - applies_to_value_path_value
-            - applies_to_value_identifier_value
+            - uncertainty_applies_to_model_value
+            - uncertainty_applies_to_class_value
+            - uncertainty_applies_to_slot_value
+            - uncertainty_applies_to_record_value
+            - uncertainty_applies_to_value_path_value
+            - uncertainty_applies_to_value_identifier_value
             - reported_value
             - measurand
             - probability_distribution
             - coverage_interval
             - uncertainty_budget
             - propagation_analysis
-            - traceability_reference_value
-            - data_quality_reference_value
-            - evidence_reference_value
-            - standards_applied_value
-            - statement_notes_value
+            - uncertainty_traceability_reference_value
+            - uncertainty_data_quality_reference_value
+            - uncertainty_evidence_reference_value
+            - uncertainty_standards_applied_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 100:2008; JCGM 101:2008; JCGM 200:2012; ISO/IEC 17025; ISO 5725"
             sql_identifier: "uq_statement"
@@ -1117,11 +1117,11 @@ classes:
         class_uri: uq:measurandSpecification
         description: "Operational specification of the measurand, quantity of interest, method, conditions, and boundary"
         slots:
-            - measurand_identifier_value
-            - measurand_name_value
-            - measurand_description_value
-            - quantity_kind_value
-            - quantity_unit_value
+            - uncertainty_measurand_identifier_value
+            - uncertainty_measurand_name_value
+            - uncertainty_measurand_description_value
+            - uncertainty_quantity_kind_value
+            - uncertainty_quantity_unit_value
             - object_or_matrix_value
             - sample_definition_value
             - sampling_frame_value
@@ -1131,11 +1131,11 @@ classes:
             - measurement_model_value
             - system_boundary_value
             - reference_conditions_value
-            - environmental_conditions_value
+            - uncertainty_environmental_conditions_value
             - corrections_applied_value
             - rounding_rule_value
             - decision_rule_value
-            - traceability_reference_value
+            - uncertainty_traceability_reference_value
         annotations:
             references: "JCGM 200:2012; JCGM 100:2008; ISO/IEC 17025"
             sql_identifier: "uq_measurand_spec"
@@ -1146,7 +1146,7 @@ classes:
         slots:
             - numeric_value_value
             - text_value_value
-            - unit_value
+            - uncertainty_unit_value
             - value_type_value
             - value_timestamp_value
             - value_source_value
@@ -1191,7 +1191,7 @@ classes:
             - interval_type_value
             - lower_bound_value
             - upper_bound_value
-            - unit_value
+            - uncertainty_unit_value
             - coverage_probability_value
             - coverage_factor_value
             - percentile_lower_value
@@ -1219,8 +1219,8 @@ classes:
             - coverage_probability_value
             - effective_degrees_of_freedom_value
             - coverage_interval
-            - standards_applied_value
-            - statement_notes_value
+            - uncertainty_standards_applied_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 100:2008; JCGM 200:2012"
             sql_identifier: "uq_budget"
@@ -1236,9 +1236,9 @@ classes:
             - standard_uncertainty_value
             - relative_standard_uncertainty_value
             - probability_distribution
-            - traceability_reference_value
-            - data_quality_reference_value
-            - evidence_reference_value
+            - uncertainty_traceability_reference_value
+            - uncertainty_data_quality_reference_value
+            - uncertainty_evidence_reference_value
         annotations:
             references: "JCGM 100:2008; JCGM 101:2008"
             sql_identifier: "uq_input_quantity"
@@ -1258,12 +1258,12 @@ classes:
             - degrees_of_freedom_value
             - coverage_factor_value
             - coefficient_of_variation_value
-            - uncertainty_factor_value
+            - uncertainty_component_factor_value
             - probability_distribution
-            - traceability_reference_value
-            - data_quality_reference_value
-            - evidence_reference_value
-            - statement_notes_value
+            - uncertainty_traceability_reference_value
+            - uncertainty_data_quality_reference_value
+            - uncertainty_evidence_reference_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 100:2008; JCGM 200:2012; ISO 5725; ISO/TS 21748"
             sql_identifier: "uq_component"
@@ -1298,8 +1298,8 @@ classes:
             - output_interval
             - sensitivity_results
             - scenario_uncertainties
-            - standards_applied_value
-            - statement_notes_value
+            - uncertainty_standards_applied_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 100:2008; JCGM 101:2008; JCGM GUM-6:2020; JCGM GUM-1:2023"
             sql_identifier: "uq_propagation"
@@ -1313,9 +1313,9 @@ classes:
             - sensitivity_value_value
             - sensitivity_rank_value
             - quality_hotspot_flag_value
-            - data_quality_reference_value
-            - traceability_reference_value
-            - statement_notes_value
+            - uncertainty_data_quality_reference_value
+            - uncertainty_traceability_reference_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 101:2008"
             sql_identifier: "uq_sensitivity_result"
@@ -1331,9 +1331,9 @@ classes:
             - scenario_probability_value
             - probability_distribution
             - coverage_interval
-            - traceability_reference_value
-            - data_quality_reference_value
-            - statement_notes_value
+            - uncertainty_traceability_reference_value
+            - uncertainty_data_quality_reference_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 101:2008; ISO 14040; ISO 14044"
             sql_identifier: "uq_scenario_uncertainty"
@@ -1350,7 +1350,7 @@ classes:
             - comparison_decision_value
             - additional_uncertainty_rationale_value
             - additional_uncertainty_component
-            - statement_notes_value
+            - uncertainty_statement_notes_value
         annotations:
             references: "JCGM 100:2008; JCGM 101:2008; ISO/IEC 17025"
             sql_identifier: "uq_comparison_assessment"
@@ -1368,17 +1368,17 @@ classes:
         annotations:
             sql_identifier: "uq_method_reference"
 
-    EvidenceReference:
+    UncertaintyEvidenceReference:
         class_uri: uq:evidenceReference
         description: "Reference to supporting evidence used to define, justify, or update uncertainty"
         slots:
-            - evidence_identifier_value
-            - evidence_type_value
-            - evidence_url_value
-            - evidence_description_value
-            - evidence_date_value
-            - evidence_provider_value
-            - evidence_version_value
+            - uncertainty_evidence_identifier_value
+            - uncertainty_evidence_type_value
+            - uncertainty_evidence_url_value
+            - uncertainty_evidence_description_value
+            - uncertainty_evidence_date_value
+            - uncertainty_evidence_provider_value
+            - uncertainty_evidence_version_value
         annotations:
             sql_identifier: "uq_evidence_reference"
 
@@ -1595,7 +1595,7 @@ enums:
             comparison_infeasible:
                 description: "Comparison is infeasible because values do not address the same measurand or boundary"
 
-    EvidenceTypeEnum:
+    UncertaintyEvidenceTypeEnum:
         description: "Types of supporting evidence for uncertainty evaluation"
         permissible_values:
             calibration_certificate:

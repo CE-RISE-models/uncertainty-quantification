@@ -1,0 +1,3550 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix linkml: <https://w3id.org/linkml/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix uq: <https://ce-rise-models.codeberg.page/uncertainty-quantification/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/.owl.ttl> a owl:Ontology ;
+    rdfs:label "uncertainty-quantification" ;
+    dcterms:license "CC BY-NC 4.0" ;
+    dcterms:title "CE-RISE Uncertainty Quantification Data Model" ;
+    pav:version "0.0.2" ;
+    skos:definition """Cross-cutting utility data model for expressing uncertainty statements, uncertainty budgets, probability distributions, propagation analyses, and comparison-relevant uncertainty metadata for CE-RISE Digital Product Passport and Digital Material Passport data models.
+""" .
+
+uq:UncertaintyQuantification a owl:Class ;
+    rdfs:label "UncertaintyQuantification" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:comparison_assessments ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statements ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:propagation_analyses ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_budgets ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:PropagationAnalysis ;
+            owl:onProperty uq:propagation_analyses ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_references ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyEvidenceReference ;
+            owl:onProperty uq:uncertainty_evidence_references ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:ComparisonAssessment ;
+            owl:onProperty uq:comparison_assessments ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:MethodReference ;
+            owl:onProperty uq:method_references ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyStatement ;
+            owl:onProperty uq:uncertainty_statements ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyBudget ;
+            owl:onProperty uq:uncertainty_budgets ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_references ] ;
+    skos:definition "Root container for uncertainty quantification statements and supporting records" ;
+    skos:exactMatch uq:uncertaintyQuantification ;
+    skos:inScheme uq: ;
+    uq:sql_identifier "uq_root" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#compatible> a owl:Class ;
+    rdfs:label "compatible" ;
+    rdfs:subClassOf uq:BoundaryMatchEnum ;
+    skos:definition "Boundaries are compatible for the intended comparison" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#divergent> a owl:Class ;
+    rdfs:label "divergent" ;
+    rdfs:subClassOf uq:BoundaryMatchEnum ;
+    skos:definition "Boundaries diverge materially" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#matching> a owl:Class ;
+    rdfs:label "matching" ;
+    rdfs:subClassOf uq:BoundaryMatchEnum ;
+    skos:definition "Boundaries match" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#not_assessed> a owl:Class ;
+    rdfs:label "not_assessed" ;
+    rdfs:subClassOf uq:BoundaryMatchEnum ;
+    skos:definition "Boundary compatibility has not been assessed" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#partial> a owl:Class ;
+    rdfs:label "partial" ;
+    rdfs:subClassOf uq:BoundaryMatchEnum ;
+    skos:definition "Boundaries partially match" .
+
+uq:ComparisonAssessment a owl:Class ;
+    rdfs:label "ComparisonAssessment" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:comparison_decision_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:additional_uncertainty_rationale_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:left_statement_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:comparison_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:boundary_match_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:comparison_decision_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:traceability_match_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:BoundaryMatchEnum ;
+            owl:onProperty uq:boundary_match_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:additional_uncertainty_rationale_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:TraceabilityMatchEnum ;
+            owl:onProperty uq:traceability_match_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:left_statement_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:right_statement_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:traceability_match_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:ComparisonDecisionEnum ;
+            owl:onProperty uq:comparison_decision_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:right_statement_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:comparison_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:right_statement_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:additional_uncertainty_component ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:left_statement_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:boundary_match_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:additional_uncertainty_rationale_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:additional_uncertainty_component ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyComponent ;
+            owl:onProperty uq:additional_uncertainty_component ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:comparison_identifier_value ] ;
+    skos:definition "Assessment of whether two uncertainty-backed values can be compared meaningfully" ;
+    skos:exactMatch uq:comparisonAssessment ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 101:2008; ISO/IEC 17025" ;
+    uq:sql_identifier "uq_comparison_assessment" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_conditional> a owl:Class ;
+    rdfs:label "comparison_conditional" ;
+    rdfs:subClassOf uq:ComparisonDecisionEnum ;
+    skos:definition "Comparison is conditional on stated assumptions or restrictions" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_infeasible> a owl:Class ;
+    rdfs:label "comparison_infeasible" ;
+    rdfs:subClassOf uq:ComparisonDecisionEnum ;
+    skos:definition "Comparison is infeasible because values do not address the same measurand or boundary" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_not_recommended> a owl:Class ;
+    rdfs:label "comparison_not_recommended" ;
+    rdfs:subClassOf uq:ComparisonDecisionEnum ;
+    skos:definition "Comparison is not recommended" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_valid_with_expanded_uncertainty> a owl:Class ;
+    rdfs:label "comparison_valid_with_expanded_uncertainty" ;
+    rdfs:subClassOf uq:ComparisonDecisionEnum ;
+    skos:definition "Comparison is valid only after expanding uncertainty" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#direct_comparison_valid> a owl:Class ;
+    rdfs:label "direct_comparison_valid" ;
+    rdfs:subClassOf uq:ComparisonDecisionEnum ;
+    skos:definition "Direct comparison is valid" .
+
+uq:Correlation a owl:Class ;
+    rdfs:label "Correlation" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:second_quantity_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:first_quantity_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:correlation_basis_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:correlation_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:correlation_basis_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive -1e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+            owl:onProperty uq:correlation_coefficient_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:covariance_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:correlation_basis_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:first_quantity_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:correlation_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:correlation_coefficient_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:second_quantity_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:second_quantity_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:correlation_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:first_quantity_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:correlation_coefficient_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:covariance_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:covariance_value ] ;
+    skos:definition "Correlation or covariance relationship between input quantities or uncertainty components" ;
+    skos:exactMatch uq:correlation ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 101:2008" ;
+    uq:sql_identifier "uq_correlation" .
+
+uq:DistributionParameter a owl:Class ;
+    rdfs:label "DistributionParameter" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_parameter_value_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_parameter_unit_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_parameter_unit_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_parameter_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_parameter_name_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_parameter_value_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:distribution_parameter_unit_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:distribution_parameter_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_parameter_value_value ] ;
+    skos:definition "Name-value-unit parameter used to define a probability distribution" ;
+    skos:exactMatch uq:distributionParameter ;
+    skos:inScheme uq: ;
+    uq:sql_identifier "uq_distribution_parameter" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#beta> a owl:Class ;
+    rdfs:label "beta" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Beta distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#custom> a owl:Class ;
+    rdfs:label "custom" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Custom distribution defined outside this controlled vocabulary" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#discrete> a owl:Class ;
+    rdfs:label "discrete" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Discrete probability distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#empirical> a owl:Class ;
+    rdfs:label "empirical" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Empirical distribution defined by observed or simulated values" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#exponential> a owl:Class ;
+    rdfs:label "exponential" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Exponential distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#gamma> a owl:Class ;
+    rdfs:label "gamma" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Gamma distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#lognormal> a owl:Class ;
+    rdfs:label "lognormal" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Lognormal distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#multimodal> a owl:Class ;
+    rdfs:label "multimodal" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Distribution with multiple modes" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#normal> a owl:Class ;
+    rdfs:label "normal" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Normal or Gaussian distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#rectangular> a owl:Class ;
+    rdfs:label "rectangular" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Rectangular distribution as used in uncertainty evaluation" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#student_t> a owl:Class ;
+    rdfs:label "student_t" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Student t distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#triangular> a owl:Class ;
+    rdfs:label "triangular" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Triangular distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#uniform> a owl:Class ;
+    rdfs:label "uniform" ;
+    rdfs:subClassOf uq:DistributionTypeEnum ;
+    skos:definition "Uniform distribution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#data_quality_derived> a owl:Class ;
+    rdfs:label "data_quality_derived" ;
+    rdfs:subClassOf uq:EvaluationTypeEnum ;
+    skos:definition "Evaluation derived from data quality assessment" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#expert_judgement> a owl:Class ;
+    rdfs:label "expert_judgement" ;
+    rdfs:subClassOf uq:EvaluationTypeEnum ;
+    skos:definition "Evaluation based on expert judgement" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#mixed> a owl:Class ;
+    rdfs:label "mixed" ;
+    rdfs:subClassOf uq:EvaluationTypeEnum ;
+    skos:definition "Combination of Type A and Type B information" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#scenario_based> a owl:Class ;
+    rdfs:label "scenario_based" ;
+    rdfs:subClassOf uq:EvaluationTypeEnum ;
+    skos:definition "Evaluation based on scenario or structural alternatives" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#type_a> a owl:Class ;
+    rdfs:label "type_a" ;
+    rdfs:subClassOf uq:EvaluationTypeEnum ;
+    skos:definition "Type A evaluation by statistical analysis of measured quantity values" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#type_b> a owl:Class ;
+    rdfs:label "type_b" ;
+    rdfs:subClassOf uq:EvaluationTypeEnum ;
+    skos:definition "Type B evaluation by means other than Type A" .
+
+uq:InputQuantity a owl:Class ;
+    rdfs:label "InputQuantity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:input_quantity_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:input_quantity_unit_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:input_quantity_unit_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:input_quantity_estimate_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:input_quantity_estimate_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:input_quantity_name_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:input_quantity_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:input_quantity_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:input_quantity_unit_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:input_quantity_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyDistribution ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:input_quantity_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:input_quantity_estimate_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ] ;
+    skos:definition "Input quantity in a measurement, calculation, or statistical model" ;
+    skos:exactMatch uq:inputQuantity ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 101:2008" ;
+    uq:sql_identifier "uq_input_quantity" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#coverage_interval> a owl:Class ;
+    rdfs:label "coverage_interval" ;
+    rdfs:subClassOf uq:IntervalTypeEnum ;
+    skos:definition "Coverage interval with an associated coverage probability" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#credible_interval> a owl:Class ;
+    rdfs:label "credible_interval" ;
+    rdfs:subClassOf uq:IntervalTypeEnum ;
+    skos:definition "Bayesian credible interval" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#decision_interval> a owl:Class ;
+    rdfs:label "decision_interval" ;
+    rdfs:subClassOf uq:IntervalTypeEnum ;
+    skos:definition "Interval used for a decision or conformity assessment" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#expanded_uncertainty_interval> a owl:Class ;
+    rdfs:label "expanded_uncertainty_interval" ;
+    rdfs:subClassOf uq:IntervalTypeEnum ;
+    skos:definition "Interval derived from expanded uncertainty" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#percentile_interval> a owl:Class ;
+    rdfs:label "percentile_interval" ;
+    rdfs:subClassOf uq:IntervalTypeEnum ;
+    skos:definition "Interval defined by lower and upper percentiles" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#tolerance_interval> a owl:Class ;
+    rdfs:label "tolerance_interval" ;
+    rdfs:subClassOf uq:IntervalTypeEnum ;
+    skos:definition "Tolerance interval" .
+
+uq:MeasurandSpecification a owl:Class ;
+    rdfs:label "MeasurandSpecification" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_measurand_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_environmental_conditions_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:decision_rule_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_quantity_kind_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:corrections_applied_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_environmental_conditions_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_quantity_unit_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:method_version_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_measurand_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:system_boundary_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:reference_conditions_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sampling_frame_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:corrections_applied_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_quantity_unit_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:reference_conditions_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sample_definition_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:rounding_rule_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_quantity_kind_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_measurand_description_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:rounding_rule_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:reference_conditions_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sampling_frame_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_quantity_kind_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_environmental_conditions_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_measurand_name_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_standard_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:system_boundary_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:measurement_method_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:object_or_matrix_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_version_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_measurand_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:measurement_method_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:corrections_applied_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_quantity_unit_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:decision_rule_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:object_or_matrix_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_version_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:measurement_model_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_measurand_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_measurand_description_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:sampling_frame_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:method_standard_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:decision_rule_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:system_boundary_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:measurement_method_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:sample_definition_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sample_definition_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:rounding_rule_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_measurand_name_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:measurement_model_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_standard_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_measurand_description_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:measurement_model_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:object_or_matrix_value ] ;
+    skos:definition "Operational specification of the measurand, quantity of interest, method, conditions, and boundary" ;
+    skos:exactMatch uq:measurandSpecification ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 200:2012; JCGM 100:2008; ISO/IEC 17025" ;
+    uq:sql_identifier "uq_measurand_spec" .
+
+uq:MethodReference a owl:Class ;
+    rdfs:label "MethodReference" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_reference_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_version_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:method_standard_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty uq:method_reference_url_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:method_version_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:method_reference_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_version_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_reference_url_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_reference_url_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_reference_description_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:method_standard_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_standard_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_reference_description_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:method_reference_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:method_reference_description_value ] ;
+    skos:definition "Reference to a method, guide, standard, protocol, or implementation used for uncertainty evaluation" ;
+    skos:exactMatch uq:methodReference ;
+    skos:inScheme uq: ;
+    uq:sql_identifier "uq_method_reference" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#analytical_gum> a owl:Class ;
+    rdfs:label "analytical_gum" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Analytical propagation following GUM principles" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#bayesian_updating> a owl:Class ;
+    rdfs:label "bayesian_updating" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Bayesian updating or Bayesian modelling" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#bootstrap> a owl:Class ;
+    rdfs:label "bootstrap" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Bootstrap or resampling-based propagation" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#hybrid> a owl:Class ;
+    rdfs:label "hybrid" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Combination of multiple propagation approaches" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#monte_carlo> a owl:Class ;
+    rdfs:label "monte_carlo" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Monte Carlo propagation of distributions" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#not_evaluated> a owl:Class ;
+    rdfs:label "not_evaluated" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Propagation method has not been evaluated or is unknown" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#scenario_analysis> a owl:Class ;
+    rdfs:label "scenario_analysis" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Scenario analysis for structural or boundary alternatives" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#sensitivity_analysis> a owl:Class ;
+    rdfs:label "sensitivity_analysis" ;
+    rdfs:subClassOf uq:PropagationMethodEnum ;
+    skos:definition "Sensitivity analysis used to evaluate uncertainty drivers" .
+
+uq:QuantityValue a owl:Class ;
+    rdfs:label "QuantityValue" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:text_value_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:numeric_value_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_unit_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:ValueTypeEnum ;
+            owl:onProperty uq:value_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:text_value_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:value_source_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:text_value_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:value_type_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_unit_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:numeric_value_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:value_type_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:value_timestamp_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:value_source_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:value_source_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty uq:value_timestamp_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_unit_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:value_timestamp_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:numeric_value_value ] ;
+    skos:definition "Reported value or estimate associated with an uncertainty statement" ;
+    skos:exactMatch uq:quantityValue ;
+    skos:inScheme uq: ;
+    uq:sql_identifier "uq_quantity_value" .
+
+uq:ScenarioUncertainty a owl:Class ;
+    rdfs:label "ScenarioUncertainty" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:scenario_description_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+            owl:onProperty uq:scenario_probability_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyInterval ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:scenario_description_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:scenario_boundary_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:scenario_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:scenario_probability_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:scenario_name_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:scenario_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyDistribution ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:scenario_probability_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:scenario_name_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:scenario_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:scenario_boundary_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:scenario_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:scenario_boundary_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:scenario_description_value ] ;
+    skos:definition "Scenario-specific uncertainty context for structural, boundary, allocation, or modelling alternatives" ;
+    skos:exactMatch uq:scenarioUncertainty ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 101:2008; ISO 14040; ISO 14044" ;
+    uq:sql_identifier "uq_scenario_uncertainty" .
+
+uq:SensitivityResult a owl:Class ;
+    rdfs:label "SensitivityResult" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sensitivity_metric_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:sensitivity_parameter_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:boolean ;
+            owl:onProperty uq:quality_hotspot_flag_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty uq:sensitivity_rank_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sensitivity_metric_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:sensitivity_metric_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sensitivity_rank_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sensitivity_value_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sensitivity_parameter_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:sensitivity_value_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:quality_hotspot_flag_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sensitivity_value_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:quality_hotspot_flag_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sensitivity_parameter_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sensitivity_rank_value ] ;
+    skos:definition "Sensitivity metric for identifying uncertainty drivers and quality hotspots" ;
+    skos:exactMatch uq:sensitivityResult ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 101:2008" ;
+    uq:sql_identifier "uq_sensitivity_result" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#draft> a owl:Class ;
+    rdfs:label "draft" ;
+    rdfs:subClassOf uq:StatementStatusEnum ;
+    skos:definition "Statement is provisional" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#reported> a owl:Class ;
+    rdfs:label "reported" ;
+    rdfs:subClassOf uq:StatementStatusEnum ;
+    skos:definition "Statement is reported for use" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#revised> a owl:Class ;
+    rdfs:label "revised" ;
+    rdfs:subClassOf uq:StatementStatusEnum ;
+    skos:definition "Statement has been revised after new evidence or assumptions" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#superseded> a owl:Class ;
+    rdfs:label "superseded" ;
+    rdfs:subClassOf uq:StatementStatusEnum ;
+    skos:definition "Statement has been superseded by a newer statement" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#withdrawn> a owl:Class ;
+    rdfs:label "withdrawn" ;
+    rdfs:subClassOf uq:StatementStatusEnum ;
+    skos:definition "Statement has been withdrawn" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#compatible> a owl:Class ;
+    rdfs:label "compatible" ;
+    rdfs:subClassOf uq:TraceabilityMatchEnum ;
+    skos:definition "Traceability bases are compatible for the intended comparison" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#divergent> a owl:Class ;
+    rdfs:label "divergent" ;
+    rdfs:subClassOf uq:TraceabilityMatchEnum ;
+    skos:definition "Traceability bases diverge materially" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#matching> a owl:Class ;
+    rdfs:label "matching" ;
+    rdfs:subClassOf uq:TraceabilityMatchEnum ;
+    skos:definition "Traceability bases match" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#not_assessed> a owl:Class ;
+    rdfs:label "not_assessed" ;
+    rdfs:subClassOf uq:TraceabilityMatchEnum ;
+    skos:definition "Traceability compatibility has not been assessed" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#partial> a owl:Class ;
+    rdfs:label "partial" ;
+    rdfs:subClassOf uq:TraceabilityMatchEnum ;
+    skos:definition "Traceability bases partially match" .
+
+uq:UncertaintyEvidenceReference a owl:Class ;
+    rdfs:label "UncertaintyEvidenceReference" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_version_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_type_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty uq:uncertainty_evidence_url_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_description_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyEvidenceTypeEnum ;
+            owl:onProperty uq:uncertainty_evidence_type_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_date_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_url_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_provider_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_provider_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_description_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_version_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_description_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_provider_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_date_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:date ;
+            owl:onProperty uq:uncertainty_evidence_date_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_url_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_version_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_identifier_value ] ;
+    skos:definition "Reference to supporting evidence used to define, justify, or update uncertainty" ;
+    skos:exactMatch uq:evidenceReference ;
+    skos:inScheme uq: ;
+    uq:sql_identifier "uq_evidence_reference" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#calibration_certificate> a owl:Class ;
+    rdfs:label "calibration_certificate" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Calibration certificate or calibration record" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#data_quality_assessment> a owl:Class ;
+    rdfs:label "data_quality_assessment" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Data quality assessment or pedigree record" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#expert_judgement> a owl:Class ;
+    rdfs:label "expert_judgement" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Expert judgement record" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#laboratory_report> a owl:Class ;
+    rdfs:label "laboratory_report" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Laboratory report or analytical result" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#literature_source> a owl:Class ;
+    rdfs:label "literature_source" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Scientific literature, handbook, or published reference" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#measurement_report> a owl:Class ;
+    rdfs:label "measurement_report" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Measurement, test, or inspection report" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#other> a owl:Class ;
+    rdfs:label "other" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Other supporting evidence type" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#reference_material_certificate> a owl:Class ;
+    rdfs:label "reference_material_certificate" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Certificate for a certified or reference material" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#software_record> a owl:Class ;
+    rdfs:label "software_record" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Software, workflow, script, or computational record" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#standard_method> a owl:Class ;
+    rdfs:label "standard_method" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Standardized method, guide, or protocol" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#supplier_declaration> a owl:Class ;
+    rdfs:label "supplier_declaration" ;
+    rdfs:subClassOf uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Supplier declaration or product documentation" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#boundary_condition> a owl:Class ;
+    rdfs:label "boundary_condition" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from scope, boundary, or reference condition choices" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#calibration> a owl:Class ;
+    rdfs:label "calibration" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from calibration or calibration hierarchy" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#data_quality> a owl:Class ;
+    rdfs:label "data_quality" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from data quality limitations or proxy data" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#drift> a owl:Class ;
+    rdfs:label "drift" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from drift over time" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#environmental_condition> a owl:Class ;
+    rdfs:label "environmental_condition" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from environmental or procedural conditions" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#input_data> a owl:Class ;
+    rdfs:label "input_data" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from input data values or datasets" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#method_bias> a owl:Class ;
+    rdfs:label "method_bias" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from method bias or imperfect correction" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#model_discrepancy> a owl:Class ;
+    rdfs:label "model_discrepancy" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from difference between the model and the represented system" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#other> a owl:Class ;
+    rdfs:label "other" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Other uncertainty source category" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#recovery> a owl:Class ;
+    rdfs:label "recovery" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from recovery, blank, matrix, or transfer effects" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#reference_material> a owl:Class ;
+    rdfs:label "reference_material" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from certified or reference material values" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#repeatability> a owl:Class ;
+    rdfs:label "repeatability" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Short-term variability under repeatability conditions" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#reproducibility> a owl:Class ;
+    rdfs:label "reproducibility" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Variability across laboratories, operators, instruments, sites, or times" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#resolution> a owl:Class ;
+    rdfs:label "resolution" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from instrument or reporting resolution" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#sample_preparation> a owl:Class ;
+    rdfs:label "sample_preparation" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from specimen preparation, extraction, homogenization, or conditioning" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#sampling> a owl:Class ;
+    rdfs:label "sampling" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from sampling design, sample selection, or representativeness" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#scenario_choice> a owl:Class ;
+    rdfs:label "scenario_choice" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from discrete scenario or structural choices" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#software> a owl:Class ;
+    rdfs:label "software" ;
+    rdfs:subClassOf uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Uncertainty from software, numerical implementation, or computational workflow" .
+
+uq:UncertaintyStatement a owl:Class ;
+    rdfs:label "UncertaintyStatement" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_budget ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_applies_to_class_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_label_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_type_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:StatementStatusEnum ;
+            owl:onProperty uq:uncertainty_statement_status_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_applies_to_record_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty uq:uncertainty_statement_date_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_date_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_applies_to_value_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_date_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_applies_to_slot_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_label_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_status_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_applies_to_slot_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:QuantityValue ;
+            owl:onProperty uq:reported_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_applies_to_model_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:reported_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_applies_to_value_path_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_applies_to_model_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:propagation_analysis ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_applies_to_value_path_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_budget ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyInterval ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_applies_to_record_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_applies_to_model_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:measurand ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_applies_to_value_path_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:PropagationAnalysis ;
+            owl:onProperty uq:propagation_analysis ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_applies_to_value_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_type_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_applies_to_record_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:propagation_analysis ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_label_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:MeasurandSpecification ;
+            owl:onProperty uq:measurand ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:measurand ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_applies_to_class_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyStatementTypeEnum ;
+            owl:onProperty uq:uncertainty_statement_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_applies_to_value_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:reported_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyDistribution ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_applies_to_class_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyBudget ;
+            owl:onProperty uq:uncertainty_budget ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_status_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_applies_to_slot_value ] ;
+    skos:definition "Reusable statement describing uncertainty for a reported value, field, dataset, model output, or comparison" ;
+    skos:exactMatch uq:uncertaintyStatement ;
+    skos:inScheme uq: ;
+    skos:note "Designed as the main integration point for other CE-RISE data models.",
+        "Other models may either embed this class or point to it through uncertainty_statement_identifier_value." ;
+    uq:references "JCGM 100:2008; JCGM 101:2008; JCGM 200:2012; ISO/IEC 17025; ISO 5725" ;
+    uq:sql_identifier "uq_statement" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#combined_uncertainty> a owl:Class ;
+    rdfs:label "combined_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Combined uncertainty that integrates multiple sources or uncertainty types" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#comparison_uncertainty> a owl:Class ;
+    rdfs:label "comparison_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Uncertainty introduced or assessed when comparing two values or studies" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#data_quality_derived_uncertainty> a owl:Class ;
+    rdfs:label "data_quality_derived_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Uncertainty derived from data quality scores, pedigree information, or data quality limitations" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#measurement_uncertainty> a owl:Class ;
+    rdfs:label "measurement_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Uncertainty associated with a measurement result" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#model_uncertainty> a owl:Class ;
+    rdfs:label "model_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Uncertainty associated with a model structure, model discrepancy, or modelling assumption" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#parameter_uncertainty> a owl:Class ;
+    rdfs:label "parameter_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Uncertainty associated with an input parameter or model parameter" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#scenario_uncertainty> a owl:Class ;
+    rdfs:label "scenario_uncertainty" ;
+    rdfs:subClassOf uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Uncertainty associated with a scenario, system boundary, allocation rule, or structural choice" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#calculated_value> a owl:Class ;
+    rdfs:label "calculated_value" ;
+    rdfs:subClassOf uq:ValueTypeEnum ;
+    skos:definition "Value obtained by calculation" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#categorical_value> a owl:Class ;
+    rdfs:label "categorical_value" ;
+    rdfs:subClassOf uq:ValueTypeEnum ;
+    skos:definition "Categorical or classification value" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#estimated_value> a owl:Class ;
+    rdfs:label "estimated_value" ;
+    rdfs:subClassOf uq:ValueTypeEnum ;
+    skos:definition "Value obtained by estimation" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#interval_value> a owl:Class ;
+    rdfs:label "interval_value" ;
+    rdfs:subClassOf uq:ValueTypeEnum ;
+    skos:definition "Value represented primarily as an interval" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#measured_value> a owl:Class ;
+    rdfs:label "measured_value" ;
+    rdfs:subClassOf uq:ValueTypeEnum ;
+    skos:definition "Value obtained by measurement" .
+
+<https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#simulated_value> a owl:Class ;
+    rdfs:label "simulated_value" ;
+    rdfs:subClassOf uq:ValueTypeEnum ;
+    skos:definition "Value obtained by simulation" .
+
+uq:comparison_assessments a owl:ObjectProperty ;
+    rdfs:label "comparison_assessments" ;
+    rdfs:range uq:ComparisonAssessment ;
+    skos:definition "Assessments of whether uncertainty statements support meaningful comparison" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:comparisonAssessment" ;
+    uq:sql_identifier "uq_comparison_assessments" .
+
+uq:correlations a owl:ObjectProperty ;
+    rdfs:label "correlations" ;
+    rdfs:range uq:Correlation ;
+    skos:definition "Correlations or covariances between input quantities or components" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:correlation" ;
+    uq:sql_identifier "uq_correlations" .
+
+uq:distribution_parameters a owl:ObjectProperty ;
+    rdfs:label "distribution_parameters" ;
+    rdfs:range uq:DistributionParameter ;
+    skos:definition "Flexible distribution parameters, such as mean, standard deviation, minimum, maximum, shape, or scale" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionParameter" ;
+    uq:sql_identifier "uq_distribution_parameters" .
+
+uq:input_quantities a owl:ObjectProperty ;
+    rdfs:label "input_quantities" ;
+    rdfs:range uq:InputQuantity ;
+    skos:definition "Input quantities in the measurement or calculation model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:inputQuantity" ;
+    uq:sql_identifier "uq_input_quantities" .
+
+uq:method_references a owl:ObjectProperty ;
+    rdfs:label "method_references" ;
+    rdfs:range uq:MethodReference ;
+    skos:definition "Methods, standards, and protocols referenced by the uncertainty model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:methodReference" ;
+    uq:sql_identifier "uq_method_references" .
+
+uq:propagation_analyses a owl:ObjectProperty ;
+    rdfs:label "propagation_analyses" ;
+    rdfs:range uq:PropagationAnalysis ;
+    skos:definition "Propagation analyses available for reuse by one or more uncertainty statements" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:propagationAnalysis" ;
+    uq:sql_identifier "uq_propagation_analyses" .
+
+uq:scenario_uncertainties a owl:ObjectProperty ;
+    rdfs:label "scenario_uncertainties" ;
+    rdfs:range uq:ScenarioUncertainty ;
+    skos:definition "Scenario-specific uncertainty results or structural alternatives" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:scenarioUncertainty" ;
+    uq:sql_identifier "uq_scenario_uncertainties" .
+
+uq:sensitivity_results a owl:ObjectProperty ;
+    rdfs:label "sensitivity_results" ;
+    rdfs:range uq:SensitivityResult ;
+    skos:definition "Sensitivity results identifying drivers of output uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:sensitivityResult" ;
+    uq:sql_identifier "uq_sensitivity_results" .
+
+uq:uncertainty_budgets a owl:ObjectProperty ;
+    rdfs:label "uncertainty_budgets" ;
+    rdfs:range uq:UncertaintyBudget ;
+    skos:definition "Uncertainty budgets available for reuse by one or more uncertainty statements" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:uncertaintyBudget" ;
+    uq:sql_identifier "uq_uncertainty_budgets" .
+
+uq:uncertainty_components a owl:ObjectProperty ;
+    rdfs:label "uncertainty_components" ;
+    rdfs:range uq:UncertaintyComponent ;
+    skos:definition "Individual uncertainty components included in an uncertainty budget" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:uncertaintyComponent" ;
+    uq:sql_identifier "uq_uncertainty_components" .
+
+uq:uncertainty_evidence_references a owl:ObjectProperty ;
+    rdfs:label "uncertainty_evidence_references" ;
+    rdfs:range uq:UncertaintyEvidenceReference ;
+    skos:definition "Evidence records referenced by the uncertainty model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:evidenceReference" ;
+    uq:sql_identifier "uq_evidence_references" .
+
+uq:uncertainty_statements a owl:ObjectProperty ;
+    rdfs:label "uncertainty_statements" ;
+    rdfs:range uq:UncertaintyStatement ;
+    skos:definition "Reusable uncertainty statements that can be embedded or referenced by other CE-RISE data models" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:uncertaintyStatement" ;
+    uq:sql_identifier "uq_uncertainty_statements" .
+
+uq:additional_uncertainty_component a owl:ObjectProperty ;
+    rdfs:label "additional_uncertainty_component" ;
+    rdfs:range uq:UncertaintyComponent ;
+    skos:definition "Additional uncertainty component introduced because of comparison mismatch" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:additionalUncertaintyComponent" ;
+    uq:sql_identifier "uq_additional_uncertainty_component" .
+
+uq:additional_uncertainty_rationale_value a owl:DatatypeProperty ;
+    rdfs:label "additional_uncertainty_rationale_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Rationale for adding or expanding uncertainty because of traceability, boundary, method, or data quality mismatch" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:additionalUncertaintyRationaleValue" ;
+    uq:sql_identifier "uq_additional_uncertainty_rationale" .
+
+uq:analysis_timestamp_value a owl:DatatypeProperty ;
+    rdfs:label "analysis_timestamp_value" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Date and time when an analysis was performed" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:generatedAtTime" ;
+    uq:sql_identifier "uq_analysis_timestamp" .
+
+uq:boundary_match_value a owl:ObjectProperty ;
+    rdfs:label "boundary_match_value" ;
+    rdfs:range uq:BoundaryMatchEnum ;
+    skos:definition "Assessment of whether method, scope, or system boundaries are compatible for comparison" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:boundaryMatchValue" ;
+    uq:sql_identifier "uq_boundary_match" .
+
+uq:budget_method_value a owl:ObjectProperty ;
+    rdfs:label "budget_method_value" ;
+    rdfs:range uq:PropagationMethodEnum ;
+    skos:definition "Method used to combine uncertainty components" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:budgetMethodValue" ;
+    uq:sql_identifier "uq_budget_method" .
+
+uq:coefficient_of_variation_value a owl:DatatypeProperty ;
+    rdfs:label "coefficient_of_variation_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Coefficient of variation used as a relative uncertainty measure" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:coefficientOfVariationValue" ;
+    uq:sql_identifier "uq_coefficient_of_variation" .
+
+uq:combined_standard_uncertainty_value a owl:DatatypeProperty ;
+    rdfs:label "combined_standard_uncertainty_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Combined standard uncertainty obtained from the individual uncertainty components" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:combinedStandardUncertaintyValue" ;
+    uq:sql_identifier "uq_combined_standard_uncertainty" .
+
+uq:comparison_decision_value a owl:ObjectProperty ;
+    rdfs:label "comparison_decision_value" ;
+    rdfs:range uq:ComparisonDecisionEnum ;
+    skos:definition "Decision on whether a direct or conditional comparison is meaningful" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:comparisonDecisionValue" ;
+    uq:sql_identifier "uq_comparison_decision" .
+
+uq:comparison_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "comparison_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for a comparison assessment involving uncertainty statements" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_comparison_identifier" .
+
+uq:component_estimate_value a owl:DatatypeProperty ;
+    rdfs:label "component_estimate_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Best estimate associated with an uncertainty component" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:componentEstimateValue" ;
+    uq:sql_identifier "uq_component_estimate" .
+
+uq:corrections_applied_value a owl:DatatypeProperty ;
+    rdfs:label "corrections_applied_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Corrections applied to the measured or calculated value, including corrections for bias, drift, blank, recovery, or matrix effects" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:correctionsAppliedValue" ;
+    uq:sql_identifier "uq_corrections_applied" .
+
+uq:correlation_basis_value a owl:DatatypeProperty ;
+    rdfs:label "correlation_basis_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Basis, evidence, or assumption used to justify a correlation or covariance" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:correlationBasisValue" ;
+    uq:sql_identifier "uq_correlation_basis" .
+
+uq:correlation_coefficient_value a owl:DatatypeProperty ;
+    rdfs:label "correlation_coefficient_value" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive -1e+00 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+    skos:definition "Correlation coefficient between two quantities" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:correlationCoefficientValue" ;
+    uq:sql_identifier "uq_correlation_coefficient" .
+
+uq:correlation_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "correlation_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for a correlation or covariance relationship" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_correlation_identifier" .
+
+uq:covariance_value a owl:DatatypeProperty ;
+    rdfs:label "covariance_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Covariance between two quantities" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:covarianceValue" ;
+    uq:sql_identifier "uq_covariance" .
+
+uq:decision_rule_value a owl:DatatypeProperty ;
+    rdfs:label "decision_rule_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Decision rule used for conformity assessment or comparison when uncertainty is considered" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:decisionRuleValue" ;
+    uq:sql_identifier "uq_decision_rule" .
+
+uq:degrees_of_freedom_value a owl:DatatypeProperty ;
+    rdfs:label "degrees_of_freedom_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Degrees of freedom associated with an uncertainty component or estimate" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:degreesOfFreedomValue" ;
+    uq:sql_identifier "uq_degrees_of_freedom" .
+
+uq:distribution_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for a probability distribution used in the uncertainty evaluation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_distribution_identifier" .
+
+uq:distribution_location_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_location_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Location parameter of the probability distribution when applicable" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionLocationValue" ;
+    uq:sql_identifier "uq_distribution_location" .
+
+uq:distribution_lower_bound_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_lower_bound_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Lower support bound of the probability distribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionLowerBoundValue" ;
+    uq:sql_identifier "uq_distribution_lower_bound" .
+
+uq:distribution_mean_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_mean_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Mean of the probability distribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionMeanValue" ;
+    uq:sql_identifier "uq_distribution_mean" .
+
+uq:distribution_median_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_median_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Median of the probability distribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionMedianValue" ;
+    uq:sql_identifier "uq_distribution_median" .
+
+uq:distribution_notes_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_notes_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Notes about distribution choice, fitting, assumptions, or limitations" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:comment" ;
+    uq:sql_identifier "uq_distribution_notes" .
+
+uq:distribution_parameter_name_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_parameter_name_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Name of a distribution parameter, such as mean, standard deviation, minimum, maximum, shape, or scale" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:label" ;
+    uq:sql_identifier "uq_distribution_parameter_name" .
+
+uq:distribution_parameter_unit_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_parameter_unit_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Unit associated with a distribution parameter" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:unit" ;
+    uq:sql_identifier "uq_distribution_parameter_unit" .
+
+uq:distribution_parameter_value_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_parameter_value_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Numeric value of a distribution parameter" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:numericValue" ;
+    uq:sql_identifier "uq_distribution_parameter_value" .
+
+uq:distribution_scale_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_scale_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Scale parameter of the probability distribution when applicable" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionScaleValue" ;
+    uq:sql_identifier "uq_distribution_scale" .
+
+uq:distribution_standard_deviation_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_standard_deviation_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Standard deviation of the probability distribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionStandardDeviationValue" ;
+    uq:sql_identifier "uq_distribution_standard_deviation" .
+
+uq:distribution_type_value a owl:ObjectProperty ;
+    rdfs:label "distribution_type_value" ;
+    rdfs:range uq:DistributionTypeEnum ;
+    skos:definition "Type of probability distribution used to describe uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:type" ;
+    uq:sql_identifier "uq_distribution_type" .
+
+uq:distribution_upper_bound_value a owl:DatatypeProperty ;
+    rdfs:label "distribution_upper_bound_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Upper support bound of the probability distribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:distributionUpperBoundValue" ;
+    uq:sql_identifier "uq_distribution_upper_bound" .
+
+uq:effective_degrees_of_freedom_value a owl:DatatypeProperty ;
+    rdfs:label "effective_degrees_of_freedom_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Effective degrees of freedom associated with the combined uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:effectiveDegreesOfFreedomValue" ;
+    uq:sql_identifier "uq_effective_degrees_of_freedom" .
+
+uq:empirical_values_reference_value a owl:DatatypeProperty ;
+    rdfs:label "empirical_values_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to empirical samples or tabulated values used to define an empirical distribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:wasDerivedFrom" ;
+    uq:sql_identifier "uq_empirical_values_reference" .
+
+uq:evaluation_type_value a owl:ObjectProperty ;
+    rdfs:label "evaluation_type_value" ;
+    rdfs:range uq:EvaluationTypeEnum ;
+    skos:definition "Type of evaluation used for the uncertainty component" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:evaluationTypeValue" ;
+    uq:sql_identifier "uq_evaluation_type" .
+
+uq:expanded_uncertainty_value a owl:DatatypeProperty ;
+    rdfs:label "expanded_uncertainty_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Expanded uncertainty obtained by multiplying combined standard uncertainty by a coverage factor" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:expandedUncertaintyValue" ;
+    uq:sql_identifier "uq_expanded_uncertainty" .
+
+uq:first_quantity_reference_value a owl:DatatypeProperty ;
+    rdfs:label "first_quantity_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to the first quantity in a correlation or covariance relationship" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:firstQuantityReferenceValue" ;
+    uq:sql_identifier "uq_first_quantity_reference" .
+
+uq:input_quantity_estimate_value a owl:DatatypeProperty ;
+    rdfs:label "input_quantity_estimate_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Best estimate of an input quantity" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:numericValue" ;
+    uq:sql_identifier "uq_input_quantity_estimate" .
+
+uq:input_quantity_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "input_quantity_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for an input quantity in a measurement or calculation model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_input_quantity_identifier" .
+
+uq:input_quantity_name_value a owl:DatatypeProperty ;
+    rdfs:label "input_quantity_name_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Name of an input quantity in a measurement or calculation model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:label" ;
+    uq:sql_identifier "uq_input_quantity_name" .
+
+uq:input_quantity_unit_value a owl:DatatypeProperty ;
+    rdfs:label "input_quantity_unit_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Unit of an input quantity" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:unit" ;
+    uq:sql_identifier "uq_input_quantity_unit" .
+
+uq:interval_type_value a owl:ObjectProperty ;
+    rdfs:label "interval_type_value" ;
+    rdfs:range uq:IntervalTypeEnum ;
+    skos:definition "Type of interval used to communicate uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:type" ;
+    uq:sql_identifier "uq_interval_type" .
+
+uq:left_statement_reference_value a owl:DatatypeProperty ;
+    rdfs:label "left_statement_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to the first uncertainty statement in a comparison" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:leftStatementReferenceValue" ;
+    uq:sql_identifier "uq_left_statement_reference" .
+
+uq:lower_bound_value a owl:DatatypeProperty ;
+    rdfs:label "lower_bound_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Lower bound of an uncertainty interval, coverage interval, or plausible range" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:lowerBoundValue" ;
+    uq:sql_identifier "uq_lower_bound" .
+
+uq:measurand a owl:ObjectProperty ;
+    rdfs:label "measurand" ;
+    rdfs:range uq:MeasurandSpecification ;
+    skos:definition "Operational definition of the measurand or value of interest" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:measurand" ;
+    uq:sql_identifier "uq_measurand" .
+
+uq:measurement_method_value a owl:DatatypeProperty ;
+    rdfs:label "measurement_method_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Measurement, calculation, test, or modelling method used to obtain the value" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "sosa:usedProcedure" ;
+    uq:sql_identifier "uq_measurement_method" .
+
+uq:method_reference_description_value a owl:DatatypeProperty ;
+    rdfs:label "method_reference_description_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Description of the referenced method, guide, standard, protocol, or documentation resource" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:description" ;
+    uq:sql_identifier "uq_method_reference_description" .
+
+uq:method_reference_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "method_reference_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for a method reference" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_method_reference_identifier" .
+
+uq:method_reference_url_value a owl:DatatypeProperty ;
+    rdfs:label "method_reference_url_value" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "URL for a method, guide, standard, protocol, or documentation resource" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "schema:url" ;
+    uq:sql_identifier "uq_method_reference_url" .
+
+uq:model_equation_value a owl:DatatypeProperty ;
+    rdfs:label "model_equation_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Equation, model expression, or model reference used for propagation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:modelEquationValue" ;
+    uq:sql_identifier "uq_model_equation" .
+
+uq:numeric_value_value a owl:DatatypeProperty ;
+    rdfs:label "numeric_value_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Numeric value associated with a reported result, estimate, distribution parameter, or uncertainty quantity" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:numericValue" ;
+    uq:sql_identifier "uq_numeric_value" .
+
+uq:object_or_matrix_value a owl:DatatypeProperty ;
+    rdfs:label "object_or_matrix_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Object, material matrix, product, population, or system to which the measurand applies" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "sosa:hasFeatureOfInterest" ;
+    uq:sql_identifier "uq_object_or_matrix" .
+
+uq:output_distribution a owl:ObjectProperty ;
+    rdfs:label "output_distribution" ;
+    rdfs:range uq:UncertaintyDistribution ;
+    skos:definition "Output probability distribution produced by propagation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:outputDistribution" ;
+    uq:sql_identifier "uq_output_distribution" .
+
+uq:output_interval a owl:ObjectProperty ;
+    rdfs:label "output_interval" ;
+    rdfs:range uq:UncertaintyInterval ;
+    skos:definition "Output interval produced by propagation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:outputInterval" ;
+    uq:sql_identifier "uq_output_interval" .
+
+uq:percentile_lower_value a owl:DatatypeProperty ;
+    rdfs:label "percentile_lower_value" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1e+02 ] ) ] ) ] ;
+    skos:definition "Lower percentile used to define an interval, such as 5 for a 5th percentile bound" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:percentileLowerValue" ;
+    uq:sql_identifier "uq_percentile_lower" .
+
+uq:percentile_upper_value a owl:DatatypeProperty ;
+    rdfs:label "percentile_upper_value" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1e+02 ] ) ] ) ] ;
+    skos:definition "Upper percentile used to define an interval, such as 95 for a 95th percentile bound" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:percentileUpperValue" ;
+    uq:sql_identifier "uq_percentile_upper" .
+
+uq:propagation_analysis a owl:ObjectProperty ;
+    rdfs:label "propagation_analysis" ;
+    rdfs:range uq:PropagationAnalysis ;
+    skos:definition "Propagation or numerical analysis used to derive an uncertainty statement" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:propagationAnalysis" ;
+    uq:sql_identifier "uq_propagation_analysis" .
+
+uq:propagation_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "propagation_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for an uncertainty propagation analysis" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_propagation_identifier" .
+
+uq:propagation_method_value a owl:ObjectProperty ;
+    rdfs:label "propagation_method_value" ;
+    rdfs:range uq:PropagationMethodEnum ;
+    skos:definition "Method used to propagate uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:propagationMethodValue" ;
+    uq:sql_identifier "uq_propagation_method" .
+
+uq:quality_hotspot_flag_value a owl:DatatypeProperty ;
+    rdfs:label "quality_hotspot_flag_value" ;
+    rdfs:range xsd:boolean ;
+    skos:definition "Whether the sensitivity result identifies a data quality or traceability hotspot" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:qualityHotspotFlagValue" ;
+    uq:sql_identifier "uq_quality_hotspot_flag" .
+
+uq:random_seed_value a owl:DatatypeProperty ;
+    rdfs:label "random_seed_value" ;
+    rdfs:range xsd:integer ;
+    skos:definition "Random seed used for a stochastic simulation, when recorded" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:randomSeedValue" ;
+    uq:sql_identifier "uq_random_seed" .
+
+uq:reference_conditions_value a owl:DatatypeProperty ;
+    rdfs:label "reference_conditions_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference conditions to which the reported value is corrected or intended to apply" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:referenceConditionsValue" ;
+    uq:sql_identifier "uq_reference_conditions" .
+
+uq:reported_value a owl:ObjectProperty ;
+    rdfs:label "reported_value" ;
+    rdfs:range uq:QuantityValue ;
+    skos:definition "Reported value to which the uncertainty statement applies, when represented in this utility model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:reportedValue" ;
+    uq:sql_identifier "uq_reported_value" .
+
+uq:right_statement_reference_value a owl:DatatypeProperty ;
+    rdfs:label "right_statement_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to the second uncertainty statement in a comparison" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:rightStatementReferenceValue" ;
+    uq:sql_identifier "uq_right_statement_reference" .
+
+uq:rounding_rule_value a owl:DatatypeProperty ;
+    rdfs:label "rounding_rule_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Rounding or reporting rule applied to the value and uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:roundingRuleValue" ;
+    uq:sql_identifier "uq_rounding_rule" .
+
+uq:sample_definition_value a owl:DatatypeProperty ;
+    rdfs:label "sample_definition_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Definition of the sample, specimen, item, batch, or population subset used for the evaluation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:sampleDefinitionValue" ;
+    uq:sql_identifier "uq_sample_definition" .
+
+uq:sampling_frame_value a owl:DatatypeProperty ;
+    rdfs:label "sampling_frame_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Sampling frame, location, period, state, or population basis for the measurand" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:samplingFrameValue" ;
+    uq:sql_identifier "uq_sampling_frame" .
+
+uq:scenario_boundary_value a owl:DatatypeProperty ;
+    rdfs:label "scenario_boundary_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Boundary, scope, allocation rule, or modelling choice represented by a scenario" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:scenarioBoundaryValue" ;
+    uq:sql_identifier "uq_scenario_boundary" .
+
+uq:scenario_description_value a owl:DatatypeProperty ;
+    rdfs:label "scenario_description_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Description of a scenario, including the structural or boundary choice it represents" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:description" ;
+    uq:sql_identifier "uq_scenario_description" .
+
+uq:scenario_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "scenario_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for a scenario used in uncertainty or robustness analysis" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_scenario_identifier" .
+
+uq:scenario_name_value a owl:DatatypeProperty ;
+    rdfs:label "scenario_name_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Human-readable name of a scenario" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:label" ;
+    uq:sql_identifier "uq_scenario_name" .
+
+uq:scenario_probability_value a owl:DatatypeProperty ;
+    rdfs:label "scenario_probability_value" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+    skos:definition "Optional probability or weight assigned to a scenario" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:scenarioProbabilityValue" ;
+    uq:sql_identifier "uq_scenario_probability" .
+
+uq:second_quantity_reference_value a owl:DatatypeProperty ;
+    rdfs:label "second_quantity_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to the second quantity in a correlation or covariance relationship" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:secondQuantityReferenceValue" ;
+    uq:sql_identifier "uq_second_quantity_reference" .
+
+uq:sensitivity_coefficient_value a owl:DatatypeProperty ;
+    rdfs:label "sensitivity_coefficient_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Sensitivity coefficient describing how the measurand responds to this input or component" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:sensitivityCoefficientValue" ;
+    uq:sql_identifier "uq_sensitivity_coefficient" .
+
+uq:sensitivity_metric_value a owl:DatatypeProperty ;
+    rdfs:label "sensitivity_metric_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Sensitivity metric, such as Sobol index, rank correlation, derivative, or elementary effect" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:sensitivityMetricValue" ;
+    uq:sql_identifier "uq_sensitivity_metric" .
+
+uq:sensitivity_parameter_value a owl:DatatypeProperty ;
+    rdfs:label "sensitivity_parameter_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Input, parameter, or component assessed in a sensitivity analysis" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:sensitivityParameterValue" ;
+    uq:sql_identifier "uq_sensitivity_parameter" .
+
+uq:sensitivity_rank_value a owl:DatatypeProperty ;
+    rdfs:label "sensitivity_rank_value" ;
+    rdfs:range xsd:integer ;
+    skos:definition "Rank of an input, parameter, or component according to sensitivity or uncertainty contribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:sensitivityRankValue" ;
+    uq:sql_identifier "uq_sensitivity_rank" .
+
+uq:sensitivity_value_value a owl:DatatypeProperty ;
+    rdfs:label "sensitivity_value_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Numeric value of a sensitivity metric" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:numericValue" ;
+    uq:sql_identifier "uq_sensitivity_value" .
+
+uq:simulation_runs_value a owl:DatatypeProperty ;
+    rdfs:label "simulation_runs_value" ;
+    rdfs:range xsd:integer ;
+    skos:definition "Number of simulation runs used in a numerical uncertainty propagation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:simulationRunsValue" ;
+    uq:sql_identifier "uq_simulation_runs" .
+
+uq:software_reference_value a owl:DatatypeProperty ;
+    rdfs:label "software_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Software, workflow, script, or computational environment used for uncertainty evaluation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:SoftwareAgent" ;
+    uq:sql_identifier "uq_software_reference" .
+
+uq:system_boundary_value a owl:DatatypeProperty ;
+    rdfs:label "system_boundary_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "System boundary, scope, or modelling boundary relevant to the measurand" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:systemBoundaryValue" ;
+    uq:sql_identifier "uq_system_boundary" .
+
+uq:text_value_value a owl:DatatypeProperty ;
+    rdfs:label "text_value_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Textual, categorical, or structured value when the result is not represented as a simple number" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "schema:value" ;
+    uq:sql_identifier "uq_text_value" .
+
+uq:traceability_match_value a owl:ObjectProperty ;
+    rdfs:label "traceability_match_value" ;
+    rdfs:range uq:TraceabilityMatchEnum ;
+    skos:definition "Assessment of whether traceability bases are compatible for comparison" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:traceabilityMatchValue" ;
+    uq:sql_identifier "uq_traceability_match" .
+
+uq:uncertainty_applies_to_class_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_applies_to_class_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Class in an external model to which this uncertainty statement applies" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:appliesToClassValue" ;
+    uq:sql_identifier "uq_applies_to_class" .
+
+uq:uncertainty_applies_to_model_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_applies_to_model_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Name, URI, or namespace of the external data model to which this uncertainty statement applies" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:appliesToModelValue" ;
+    uq:sql_identifier "uq_applies_to_model" .
+
+uq:uncertainty_applies_to_record_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_applies_to_record_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier of the external record, object, dataset, or passport entry to which this uncertainty statement applies" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:appliesToRecordValue" ;
+    uq:sql_identifier "uq_applies_to_record" .
+
+uq:uncertainty_applies_to_slot_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_applies_to_slot_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Slot or attribute in an external model to which this uncertainty statement applies" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:appliesToSlotValue" ;
+    uq:sql_identifier "uq_applies_to_slot" .
+
+uq:uncertainty_applies_to_value_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_applies_to_value_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier of a specific value object when the target model gives value-level identifiers" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:appliesToValueIdentifierValue" ;
+    uq:sql_identifier "uq_applies_to_value_identifier" .
+
+uq:uncertainty_applies_to_value_path_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_applies_to_value_path_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "JSONPath, XPath, RDF path, or other pointer to the value to which this uncertainty statement applies" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:appliesToValuePathValue" ;
+    uq:sql_identifier "uq_applies_to_value_path" .
+
+uq:uncertainty_budget a owl:ObjectProperty ;
+    rdfs:label "uncertainty_budget" ;
+    rdfs:range uq:UncertaintyBudget ;
+    skos:definition "Uncertainty budget used to calculate or justify an uncertainty statement" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:uncertaintyBudget" ;
+    uq:sql_identifier "uq_uncertainty_budget" .
+
+uq:uncertainty_budget_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_budget_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for an uncertainty budget" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_budget_identifier" .
+
+uq:uncertainty_budget_name_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_budget_name_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Human-readable name of the uncertainty budget" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:label" ;
+    uq:sql_identifier "uq_budget_name" .
+
+uq:uncertainty_component_factor_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_component_factor_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Multiplicative uncertainty factor used to express a plausible range around a positive quantity" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:uncertaintyFactorValue" ;
+    uq:sql_identifier "uq_uncertainty_factor" .
+
+uq:uncertainty_component_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_component_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for an uncertainty component" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_component_identifier" .
+
+uq:uncertainty_environmental_conditions_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_environmental_conditions_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Environmental or procedural conditions during data acquisition" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "ssn:hasProperty" ;
+    uq:sql_identifier "uq_environmental_conditions" .
+
+uq:uncertainty_evidence_date_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_date_value" ;
+    rdfs:range xsd:date ;
+    skos:definition "Date associated with supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:date" ;
+    uq:sql_identifier "uq_evidence_date" .
+
+uq:uncertainty_evidence_description_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_description_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Description of supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:description" ;
+    uq:sql_identifier "uq_evidence_description" .
+
+uq:uncertainty_evidence_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_evidence_identifier" .
+
+uq:uncertainty_evidence_provider_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_provider_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Provider, author, laboratory, supplier, or organization responsible for supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:Agent" ;
+    uq:sql_identifier "uq_evidence_provider" .
+
+uq:uncertainty_evidence_type_value a owl:ObjectProperty ;
+    rdfs:label "uncertainty_evidence_type_value" ;
+    rdfs:range uq:UncertaintyEvidenceTypeEnum ;
+    skos:definition "Type of supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:type" ;
+    uq:sql_identifier "uq_evidence_type" .
+
+uq:uncertainty_evidence_url_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_url_value" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "URL for supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "schema:url" ;
+    uq:sql_identifier "uq_evidence_url" .
+
+uq:uncertainty_evidence_version_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_version_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Version, edition, or revision of supporting evidence" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "pav:version" ;
+    uq:sql_identifier "uq_evidence_version" .
+
+uq:uncertainty_measurand_description_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_measurand_description_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Operational definition of the measurand, including what is measured and under which conditions" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "skos:definition" ;
+    uq:sql_identifier "uq_measurand_description" .
+
+uq:uncertainty_measurand_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_measurand_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for the measurand or quantity of interest" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_measurand_identifier" .
+
+uq:uncertainty_measurand_name_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_measurand_name_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Name of the measurand or quantity of interest" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:label" ;
+    uq:sql_identifier "uq_measurand_name" .
+
+uq:uncertainty_quantity_kind_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_quantity_kind_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Kind of quantity being evaluated, such as mass, length, concentration, carbon footprint, or circularity indicator" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:hasQuantityKind" ;
+    uq:sql_identifier "uq_quantity_kind" .
+
+uq:uncertainty_quantity_unit_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_quantity_unit_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Unit in which the measurand is expressed" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:unit" ;
+    uq:sql_identifier "uq_quantity_unit" .
+
+uq:uncertainty_source_category_value a owl:ObjectProperty ;
+    rdfs:label "uncertainty_source_category_value" ;
+    rdfs:range uq:UncertaintySourceCategoryEnum ;
+    skos:definition "Category of uncertainty source" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:type" ;
+    uq:sql_identifier "uq_uncertainty_source_category" .
+
+uq:uncertainty_source_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_source_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Description or name of the uncertainty source" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:uncertaintySourceValue" ;
+    uq:sql_identifier "uq_uncertainty_source" .
+
+uq:uncertainty_statement_date_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_statement_date_value" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Date and time when the uncertainty statement was issued or last updated" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:modified" ;
+    uq:sql_identifier "uq_statement_date" .
+
+uq:uncertainty_statement_identifier_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_statement_identifier_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Identifier for an uncertainty statement that can be referenced from another CE-RISE model" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:identifier" ;
+    uq:sql_identifier "uq_statement_identifier" .
+
+uq:uncertainty_statement_label_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_statement_label_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Human-readable label for the uncertainty statement" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:label" ;
+    uq:sql_identifier "uq_statement_label" .
+
+uq:uncertainty_statement_status_value a owl:ObjectProperty ;
+    rdfs:label "uncertainty_statement_status_value" ;
+    rdfs:range uq:StatementStatusEnum ;
+    skos:definition "Lifecycle status of the uncertainty statement" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "pav:version" ;
+    uq:sql_identifier "uq_statement_status" .
+
+uq:uncertainty_statement_type_value a owl:ObjectProperty ;
+    rdfs:label "uncertainty_statement_type_value" ;
+    rdfs:range uq:UncertaintyStatementTypeEnum ;
+    skos:definition "Type of uncertainty being described" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:type" ;
+    uq:sql_identifier "uq_statement_type" .
+
+uq:upper_bound_value a owl:DatatypeProperty ;
+    rdfs:label "upper_bound_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Upper bound of an uncertainty interval, coverage interval, or plausible range" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:upperBoundValue" ;
+    uq:sql_identifier "uq_upper_bound" .
+
+uq:value_source_value a owl:DatatypeProperty ;
+    rdfs:label "value_source_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Source of the value, such as measurement, calculation, supplier declaration, literature, or simulation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:wasDerivedFrom" ;
+    uq:sql_identifier "uq_value_source" .
+
+uq:value_timestamp_value a owl:DatatypeProperty ;
+    rdfs:label "value_timestamp_value" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Date and time associated with the value" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:generatedAtTime" ;
+    uq:sql_identifier "uq_value_timestamp" .
+
+uq:value_type_value a owl:ObjectProperty ;
+    rdfs:label "value_type_value" ;
+    rdfs:range uq:ValueTypeEnum ;
+    skos:definition "Type of value being reported" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:type" ;
+    uq:sql_identifier "uq_value_type" .
+
+uq:PropagationAnalysis a owl:Class ;
+    rdfs:label "PropagationAnalysis" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom uq:ScenarioUncertainty ;
+            owl:onProperty uq:scenario_uncertainties ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:model_equation_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:PropagationMethodEnum ;
+            owl:onProperty uq:propagation_method_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:output_interval ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:simulation_runs_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:propagation_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:simulation_runs_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:random_seed_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyInterval ;
+            owl:onProperty uq:output_interval ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty uq:simulation_runs_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:software_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:random_seed_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:propagation_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty uq:analysis_timestamp_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:output_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:analysis_timestamp_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:SensitivityResult ;
+            owl:onProperty uq:sensitivity_results ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sensitivity_results ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:propagation_method_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:model_equation_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:output_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:scenario_uncertainties ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:model_equation_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:propagation_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:propagation_method_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:software_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:analysis_timestamp_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty uq:random_seed_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyDistribution ;
+            owl:onProperty uq:output_distribution ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:output_interval ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:software_reference_value ] ;
+    skos:definition "Analysis used to propagate input uncertainties to an output uncertainty statement" ;
+    skos:exactMatch uq:propagationAnalysis ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 101:2008; JCGM GUM-6:2020; JCGM GUM-1:2023" ;
+    uq:sql_identifier "uq_propagation" .
+
+uq:UncertaintyBudget a owl:Class ;
+    rdfs:label "UncertaintyBudget" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:measurement_model_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_budget_name_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:input_quantities ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:budget_method_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:combined_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:measurement_model_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyComponent ;
+            owl:onProperty uq:uncertainty_components ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_probability_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:correlations ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:expanded_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:combined_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:effective_degrees_of_freedom_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:PropagationMethodEnum ;
+            owl:onProperty uq:budget_method_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:measurement_model_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:expanded_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:effective_degrees_of_freedom_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyInterval ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_standards_applied_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_probability_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:budget_method_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_budget_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:Correlation ;
+            owl:onProperty uq:correlations ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+            owl:onProperty uq:coverage_probability_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_budget_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:combined_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_budget_name_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:effective_degrees_of_freedom_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_interval ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_components ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:InputQuantity ;
+            owl:onProperty uq:input_quantities ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_budget_name_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_budget_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:expanded_uncertainty_value ] ;
+    skos:definition "Statement of uncertainty components, their calculation, and their combination" ;
+    skos:exactMatch uq:uncertaintyBudget ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 200:2012" ;
+    uq:sql_identifier "uq_budget" .
+
+uq:UncertaintyComponent a owl:Class ;
+    rdfs:label "UncertaintyComponent" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_component_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:component_estimate_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:sensitivity_coefficient_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintySourceCategoryEnum ;
+            owl:onProperty uq:uncertainty_source_category_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:sensitivity_coefficient_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:component_estimate_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:degrees_of_freedom_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_component_identifier_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:evaluation_type_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:evaluation_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:relative_standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:sensitivity_coefficient_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coefficient_of_variation_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_component_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_data_quality_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:uncertainty_component_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:UncertaintyDistribution ;
+            owl:onProperty uq:probability_distribution ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_evidence_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:coefficient_of_variation_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_component_factor_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_source_category_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:standard_uncertainty_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_statement_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:EvaluationTypeEnum ;
+            owl:onProperty uq:evaluation_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coefficient_of_variation_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_source_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_source_category_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:degrees_of_freedom_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_source_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:component_estimate_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_source_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:degrees_of_freedom_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_traceability_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_component_factor_value ] ;
+    skos:definition "Individual contribution to uncertainty from a source, input, bias, model discrepancy, scenario, or data quality limitation" ;
+    skos:exactMatch uq:uncertaintyComponent ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 200:2012; ISO 5725; ISO/TS 21748" ;
+    uq:sql_identifier "uq_component" .
+
+uq:UncertaintyInterval a owl:Class ;
+    rdfs:label "UncertaintyInterval" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:uncertainty_unit_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:percentile_lower_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:upper_bound_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:lower_bound_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:interval_type_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:IntervalTypeEnum ;
+            owl:onProperty uq:interval_type_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:upper_bound_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:upper_bound_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+            owl:onProperty uq:coverage_probability_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:uncertainty_unit_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:percentile_lower_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+02 ] ) ] ) ] ;
+            owl:onProperty uq:percentile_upper_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:lower_bound_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:lower_bound_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:coverage_factor_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+02 ] ) ] ) ] ;
+            owl:onProperty uq:percentile_lower_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:uncertainty_unit_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:interval_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:coverage_probability_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:coverage_probability_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:percentile_upper_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:percentile_upper_value ] ;
+    skos:definition "Interval representation of uncertainty, including coverage intervals and percentile intervals" ;
+    skos:exactMatch uq:uncertaintyInterval ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 100:2008; JCGM 101:2008; JCGM 200:2012" ;
+    uq:sql_identifier "uq_interval" .
+
+uq:coverage_probability_value a owl:DatatypeProperty ;
+    rdfs:label "coverage_probability_value" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+    skos:definition "Coverage probability associated with a coverage interval or expanded uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:coverageProbabilityValue" ;
+    uq:sql_identifier "uq_coverage_probability" .
+
+uq:measurement_model_value a owl:DatatypeProperty ;
+    rdfs:label "measurement_model_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Measurement model, calculation model, statistical model, or equation relating inputs to the measurand" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:measurementModelValue" ;
+    uq:sql_identifier "uq_measurement_model" .
+
+uq:method_standard_value a owl:DatatypeProperty ;
+    rdfs:label "method_standard_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Standardized method or protocol defining the measurand or evaluation procedure" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:conformsTo" ;
+    uq:sql_identifier "uq_method_standard" .
+
+uq:method_version_value a owl:DatatypeProperty ;
+    rdfs:label "method_version_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Version, edition, date, or revision of the method used" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "pav:version" ;
+    uq:sql_identifier "uq_method_version" .
+
+uq:standard_uncertainty_value a owl:DatatypeProperty ;
+    rdfs:label "standard_uncertainty_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Standard uncertainty expressed as a standard deviation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:standardUncertaintyValue" ;
+    uq:sql_identifier "uq_standard_uncertainty" .
+
+uq:uncertainty_unit_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_unit_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Unit associated with a reported result, estimate, distribution parameter, or uncertainty quantity" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "qudt:unit" ;
+    uq:sql_identifier "uq_unit" .
+
+uq:BoundaryMatchEnum a owl:Class ;
+    rdfs:label "BoundaryMatchEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#matching> <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#compatible> <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#partial> <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#divergent> <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#not_assessed> ) ;
+    skos:definition "Compatibility of method, scope, or system boundaries for comparison" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#compatible>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#divergent>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#matching>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#not_assessed>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/BoundaryMatchEnum#partial> .
+
+uq:ComparisonDecisionEnum a owl:Class ;
+    rdfs:label "ComparisonDecisionEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#direct_comparison_valid> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_valid_with_expanded_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_conditional> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_not_recommended> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_infeasible> ) ;
+    skos:definition "Decisions about whether uncertainty-backed values can be compared" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_conditional>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_infeasible>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_not_recommended>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#comparison_valid_with_expanded_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ComparisonDecisionEnum#direct_comparison_valid> .
+
+uq:StatementStatusEnum a owl:Class ;
+    rdfs:label "StatementStatusEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#draft> <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#reported> <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#revised> <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#superseded> <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#withdrawn> ) ;
+    skos:definition "Lifecycle status values for uncertainty statements" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#draft>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#reported>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#revised>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#superseded>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/StatementStatusEnum#withdrawn> .
+
+uq:TraceabilityMatchEnum a owl:Class ;
+    rdfs:label "TraceabilityMatchEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#matching> <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#compatible> <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#partial> <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#divergent> <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#not_assessed> ) ;
+    skos:definition "Compatibility of traceability bases for comparison" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#compatible>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#divergent>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#matching>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#not_assessed>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/TraceabilityMatchEnum#partial> .
+
+uq:UncertaintyDistribution a owl:Class ;
+    rdfs:label "UncertaintyDistribution" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_upper_bound_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_lower_bound_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_type_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_scale_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_location_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_mean_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_median_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_lower_bound_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_notes_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_median_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_lower_bound_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_scale_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_standard_deviation_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_standard_deviation_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:empirical_values_reference_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:DistributionParameter ;
+            owl:onProperty uq:distribution_parameters ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_mean_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:distribution_notes_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_upper_bound_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_identifier_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_mean_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_type_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_location_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_scale_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom uq:DistributionTypeEnum ;
+            owl:onProperty uq:distribution_type_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_median_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:empirical_values_reference_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:float ;
+            owl:onProperty uq:distribution_standard_deviation_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty uq:distribution_parameters ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:empirical_values_reference_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_location_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty uq:distribution_identifier_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty uq:distribution_upper_bound_value ] ;
+    skos:definition "Probability distribution representing uncertainty for a measurand, input quantity, component, or model output" ;
+    skos:exactMatch uq:uncertaintyDistribution ;
+    skos:inScheme uq: ;
+    uq:references "JCGM 101:2008; JCGM GUM-6:2020" ;
+    uq:sql_identifier "uq_distribution" .
+
+uq:EvaluationTypeEnum a owl:Class ;
+    rdfs:label "EvaluationTypeEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#type_a> <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#type_b> <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#mixed> <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#data_quality_derived> <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#expert_judgement> <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#scenario_based> ) ;
+    skos:definition "Evaluation types for uncertainty components" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#data_quality_derived>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#expert_judgement>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#mixed>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#scenario_based>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#type_a>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/EvaluationTypeEnum#type_b> .
+
+uq:IntervalTypeEnum a owl:Class ;
+    rdfs:label "IntervalTypeEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#coverage_interval> <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#expanded_uncertainty_interval> <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#percentile_interval> <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#credible_interval> <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#tolerance_interval> <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#decision_interval> ) ;
+    skos:definition "Interval types used to report uncertainty" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#coverage_interval>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#credible_interval>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#decision_interval>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#expanded_uncertainty_interval>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#percentile_interval>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/IntervalTypeEnum#tolerance_interval> .
+
+uq:ValueTypeEnum a owl:Class ;
+    rdfs:label "ValueTypeEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#measured_value> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#calculated_value> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#estimated_value> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#simulated_value> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#categorical_value> <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#interval_value> ) ;
+    skos:definition "Types of values that may carry uncertainty" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#calculated_value>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#categorical_value>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#estimated_value>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#interval_value>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#measured_value>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/ValueTypeEnum#simulated_value> .
+
+uq:UncertaintyStatementTypeEnum a owl:Class ;
+    rdfs:label "UncertaintyStatementTypeEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#measurement_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#parameter_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#model_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#scenario_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#data_quality_derived_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#comparison_uncertainty> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#combined_uncertainty> ) ;
+    skos:definition "Types of uncertainty statement supported by the model" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#combined_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#comparison_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#data_quality_derived_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#measurement_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#model_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#parameter_uncertainty>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyStatementTypeEnum#scenario_uncertainty> .
+
+uq:coverage_factor_value a owl:DatatypeProperty ;
+    rdfs:label "coverage_factor_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Coverage factor used to obtain expanded uncertainty from combined standard uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:coverageFactorValue" ;
+    uq:sql_identifier "uq_coverage_factor" .
+
+uq:coverage_interval a owl:ObjectProperty ;
+    rdfs:label "coverage_interval" ;
+    rdfs:range uq:UncertaintyInterval ;
+    skos:definition "Coverage interval or other interval representation of uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:coverageInterval" ;
+    uq:sql_identifier "uq_coverage_interval" .
+
+uq:relative_standard_uncertainty_value a owl:DatatypeProperty ;
+    rdfs:label "relative_standard_uncertainty_value" ;
+    rdfs:range xsd:float ;
+    skos:definition "Standard uncertainty divided by the absolute value of the associated quantity value" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:relativeStandardUncertaintyValue" ;
+    uq:sql_identifier "uq_relative_standard_uncertainty" .
+
+uq:uncertainty_evidence_reference_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_evidence_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to supporting evidence such as a certificate, report, dataset, standard, or software record" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "prov:wasDerivedFrom" ;
+    uq:sql_identifier "uq_evidence_reference_value" .
+
+uq:uncertainty_standards_applied_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_standards_applied_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Standard, guide, or protocol applied in the uncertainty evaluation" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dcterms:conformsTo" ;
+    uq:sql_identifier "uq_standards_applied" .
+
+uq:PropagationMethodEnum a owl:Class ;
+    rdfs:label "PropagationMethodEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#analytical_gum> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#monte_carlo> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#bayesian_updating> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#bootstrap> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#sensitivity_analysis> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#scenario_analysis> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#hybrid> <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#not_evaluated> ) ;
+    skos:definition "Methods for uncertainty combination or propagation" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#analytical_gum>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#bayesian_updating>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#bootstrap>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#hybrid>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#monte_carlo>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#not_evaluated>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#scenario_analysis>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/PropagationMethodEnum#sensitivity_analysis> .
+
+uq:probability_distribution a owl:ObjectProperty ;
+    rdfs:label "probability_distribution" ;
+    rdfs:range uq:UncertaintyDistribution ;
+    skos:definition "Probability distribution describing uncertainty" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "uq:probabilityDistribution" ;
+    uq:sql_identifier "uq_probability_distribution" .
+
+uq:UncertaintyEvidenceTypeEnum a owl:Class ;
+    rdfs:label "UncertaintyEvidenceTypeEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#calibration_certificate> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#reference_material_certificate> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#measurement_report> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#laboratory_report> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#data_quality_assessment> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#standard_method> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#software_record> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#expert_judgement> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#literature_source> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#supplier_declaration> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#other> ) ;
+    skos:definition "Types of supporting evidence for uncertainty evaluation" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#calibration_certificate>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#data_quality_assessment>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#expert_judgement>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#laboratory_report>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#literature_source>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#measurement_report>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#other>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#reference_material_certificate>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#software_record>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#standard_method>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintyEvidenceTypeEnum#supplier_declaration> .
+
+uq:DistributionTypeEnum a owl:Class ;
+    rdfs:label "DistributionTypeEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#normal> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#lognormal> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#triangular> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#uniform> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#rectangular> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#student_t> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#beta> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#gamma> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#exponential> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#empirical> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#discrete> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#multimodal> <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#custom> ) ;
+    skos:definition "Probability distribution types used to represent uncertainty" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#beta>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#custom>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#discrete>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#empirical>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#exponential>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#gamma>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#lognormal>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#multimodal>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#normal>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#rectangular>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#student_t>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#triangular>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/DistributionTypeEnum#uniform> .
+
+uq:uncertainty_data_quality_reference_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_data_quality_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to a data quality assessment that informs or justifies an uncertainty contribution" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "dqf:dataQualityReference" ;
+    uq:sql_identifier "uq_data_quality_reference" .
+
+uq:uncertainty_traceability_reference_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_traceability_reference_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "mt:traceabilityReference" ;
+    uq:sql_identifier "uq_traceability_reference" .
+
+uq:UncertaintySourceCategoryEnum a owl:Class ;
+    rdfs:label "UncertaintySourceCategoryEnum" ;
+    owl:unionOf ( <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#repeatability> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#reproducibility> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#calibration> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#reference_material> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#resolution> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#environmental_condition> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#sampling> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#sample_preparation> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#method_bias> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#recovery> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#drift> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#model_discrepancy> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#data_quality> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#boundary_condition> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#scenario_choice> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#input_data> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#software> <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#other> ) ;
+    skos:definition "Categories of uncertainty sources" ;
+    skos:inScheme uq: ;
+    linkml:permissible_values <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#boundary_condition>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#calibration>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#data_quality>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#drift>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#environmental_condition>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#input_data>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#method_bias>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#model_discrepancy>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#other>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#recovery>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#reference_material>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#repeatability>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#reproducibility>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#resolution>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#sample_preparation>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#sampling>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#scenario_choice>,
+        <https://ce-rise-models.codeberg.page/uncertainty-quantification/UncertaintySourceCategoryEnum#software> .
+
+uq:uncertainty_statement_notes_value a owl:DatatypeProperty ;
+    rdfs:label "uncertainty_statement_notes_value" ;
+    rdfs:range xsd:string ;
+    skos:definition "Additional notes about the uncertainty statement" ;
+    skos:inScheme uq: ;
+    uq:owl.filler "rdfs:comment" ;
+    uq:sql_identifier "uq_statement_notes" .
+
+

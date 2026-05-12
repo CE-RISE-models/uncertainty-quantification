@@ -1,0 +1,1158 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix uq: <https://ce-rise-models.codeberg.page/uncertainty-quantification/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+uq:uncertaintyQuantification a sh:NodeShape ;
+    rdfs:comment "Root container for uncertainty quantification statements and supporting records" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:class uq:methodReference ;
+            sh:description "Methods, standards, and protocols referenced by the uncertainty model" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 4 ;
+            sh:path uq:method_references ],
+        [ sh:class uq:uncertaintyStatement ;
+            sh:description "Reusable uncertainty statements that can be embedded or referenced by other CE-RISE data models" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 0 ;
+            sh:path uq:uncertainty_statements ],
+        [ sh:class uq:comparisonAssessment ;
+            sh:description "Assessments of whether uncertainty statements support meaningful comparison" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 3 ;
+            sh:path uq:comparison_assessments ],
+        [ sh:class uq:uncertaintyBudget ;
+            sh:description "Uncertainty budgets available for reuse by one or more uncertainty statements" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 1 ;
+            sh:path uq:uncertainty_budgets ],
+        [ sh:class uq:propagationAnalysis ;
+            sh:description "Propagation analyses available for reuse by one or more uncertainty statements" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 2 ;
+            sh:path uq:propagation_analyses ],
+        [ sh:class uq:evidenceReference ;
+            sh:description "Evidence records referenced by the uncertainty model" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 5 ;
+            sh:path uq:uncertainty_evidence_references ] ;
+    sh:targetClass uq:uncertaintyQuantification .
+
+uq:comparisonAssessment a sh:NodeShape ;
+    rdfs:comment "Assessment of whether two uncertainty-backed values can be compared meaningfully" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Assessment of whether traceability bases are compatible for comparison" ;
+            sh:in ( "matching" "compatible" "partial" "divergent" "not_assessed" ) ;
+            sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path uq:traceability_match_value ],
+        [ sh:description "Assessment of whether method, scope, or system boundaries are compatible for comparison" ;
+            sh:in ( "matching" "compatible" "partial" "divergent" "not_assessed" ) ;
+            sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path uq:boundary_match_value ],
+        [ sh:class uq:uncertaintyComponent ;
+            sh:description "Additional uncertainty component introduced because of comparison mismatch" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 7 ;
+            sh:path uq:additional_uncertainty_component ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for a comparison assessment involving uncertainty statements" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:comparison_identifier_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:uncertainty_statement_notes_value ],
+        [ sh:description "Decision on whether a direct or conditional comparison is meaningful" ;
+            sh:in ( "direct_comparison_valid" "comparison_valid_with_expanded_uncertainty" "comparison_conditional" "comparison_not_recommended" "comparison_infeasible" ) ;
+            sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path uq:comparison_decision_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to the first uncertainty statement in a comparison" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:left_statement_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to the second uncertainty statement in a comparison" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:right_statement_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Rationale for adding or expanding uncertainty because of traceability, boundary, method, or data quality mismatch" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:additional_uncertainty_rationale_value ] ;
+    sh:targetClass uq:comparisonAssessment .
+
+uq:correlation a sh:NodeShape ;
+    rdfs:comment "Correlation or covariance relationship between input quantities or uncertainty components" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Reference to the first quantity in a correlation or covariance relationship" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:first_quantity_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for a correlation or covariance relationship" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:correlation_identifier_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to the second quantity in a correlation or covariance relationship" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:second_quantity_reference_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Correlation coefficient between two quantities" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive -1e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:correlation_coefficient_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Basis, evidence, or assumption used to justify a correlation or covariance" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:correlation_basis_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Covariance between two quantities" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:covariance_value ] ;
+    sh:targetClass uq:correlation .
+
+uq:distributionParameter a sh:NodeShape ;
+    rdfs:comment "Name-value-unit parameter used to define a probability distribution" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:float ;
+            sh:description "Numeric value of a distribution parameter" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:distribution_parameter_value_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name of a distribution parameter, such as mean, standard deviation, minimum, maximum, shape, or scale" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:distribution_parameter_name_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unit associated with a distribution parameter" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:distribution_parameter_unit_value ] ;
+    sh:targetClass uq:distributionParameter .
+
+uq:evidenceReference a sh:NodeShape ;
+    rdfs:comment "Reference to supporting evidence used to define, justify, or update uncertainty" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Version, edition, or revision of supporting evidence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:uncertainty_evidence_version_value ],
+        [ sh:datatype xsd:date ;
+            sh:description "Date associated with supporting evidence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:uncertainty_evidence_date_value ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "URL for supporting evidence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:uncertainty_evidence_url_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Description of supporting evidence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:uncertainty_evidence_description_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Provider, author, laboratory, supplier, or organization responsible for supporting evidence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:uncertainty_evidence_provider_value ],
+        [ sh:description "Type of supporting evidence" ;
+            sh:in ( "calibration_certificate" "reference_material_certificate" "measurement_report" "laboratory_report" "data_quality_assessment" "standard_method" "software_record" "expert_judgement" "literature_source" "supplier_declaration" "other" ) ;
+            sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path uq:uncertainty_evidence_type_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for supporting evidence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:uncertainty_evidence_identifier_value ] ;
+    sh:targetClass uq:evidenceReference .
+
+uq:inputQuantity a sh:NodeShape ;
+    rdfs:comment "Input quantity in a measurement, calculation, or statistical model" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unit of an input quantity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:input_quantity_unit_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Best estimate of an input quantity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:input_quantity_estimate_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name of an input quantity in a measurement or calculation model" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:input_quantity_name_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Standard uncertainty divided by the absolute value of the associated quantity value" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:relative_standard_uncertainty_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:uncertainty_traceability_reference_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Standard uncertainty expressed as a standard deviation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:standard_uncertainty_value ],
+        [ sh:class uq:uncertaintyDistribution ;
+            sh:description "Probability distribution describing uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 6 ;
+            sh:path uq:probability_distribution ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a data quality assessment that informs or justifies an uncertainty contribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:uncertainty_data_quality_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for an input quantity in a measurement or calculation model" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:input_quantity_identifier_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to supporting evidence such as a certificate, report, dataset, standard, or software record" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:uncertainty_evidence_reference_value ] ;
+    sh:targetClass uq:inputQuantity .
+
+uq:measurandSpecification a sh:NodeShape ;
+    rdfs:comment "Operational specification of the measurand, quantity of interest, method, conditions, and boundary" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Reference conditions to which the reported value is corrected or intended to apply" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path uq:reference_conditions_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Kind of quantity being evaluated, such as mass, length, concentration, carbon footprint, or circularity indicator" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:uncertainty_quantity_kind_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Rounding or reporting rule applied to the value and uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path uq:rounding_rule_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "System boundary, scope, or modelling boundary relevant to the measurand" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path uq:system_boundary_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Sampling frame, location, period, state, or population basis for the measurand" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:sampling_frame_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Decision rule used for conformity assessment or comparison when uncertainty is considered" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path uq:decision_rule_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unit in which the measurand is expressed" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:uncertainty_quantity_unit_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path uq:uncertainty_traceability_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Measurement model, calculation model, statistical model, or equation relating inputs to the measurand" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path uq:measurement_model_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Definition of the sample, specimen, item, batch, or population subset used for the evaluation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:sample_definition_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Corrections applied to the measured or calculated value, including corrections for bias, drift, blank, recovery, or matrix effects" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path uq:corrections_applied_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name of the measurand or quantity of interest" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:uncertainty_measurand_name_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Measurement, calculation, test, or modelling method used to obtain the value" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:measurement_method_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Environmental or procedural conditions during data acquisition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path uq:uncertainty_environmental_conditions_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for the measurand or quantity of interest" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:uncertainty_measurand_identifier_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Standardized method or protocol defining the measurand or evaluation procedure" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path uq:method_standard_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Version, edition, date, or revision of the method used" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:method_version_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Object, material matrix, product, population, or system to which the measurand applies" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:object_or_matrix_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Operational definition of the measurand, including what is measured and under which conditions" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:uncertainty_measurand_description_value ] ;
+    sh:targetClass uq:measurandSpecification .
+
+uq:methodReference a sh:NodeShape ;
+    rdfs:comment "Reference to a method, guide, standard, protocol, or implementation used for uncertainty evaluation" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Standardized method or protocol defining the measurand or evaluation procedure" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:method_standard_value ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "URL for a method, guide, standard, protocol, or documentation resource" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:method_reference_url_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for a method reference" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:method_reference_identifier_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Description of the referenced method, guide, standard, protocol, or documentation resource" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:method_reference_description_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Version, edition, date, or revision of the method used" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:method_version_value ] ;
+    sh:targetClass uq:methodReference .
+
+uq:quantityValue a sh:NodeShape ;
+    rdfs:comment "Reported value or estimate associated with an uncertainty statement" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:dateTime ;
+            sh:description "Date and time associated with the value" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:value_timestamp_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Textual, categorical, or structured value when the result is not represented as a simple number" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:text_value_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Numeric value associated with a reported result, estimate, distribution parameter, or uncertainty quantity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:numeric_value_value ],
+        [ sh:description "Type of value being reported" ;
+            sh:in ( "measured_value" "calculated_value" "estimated_value" "simulated_value" "categorical_value" "interval_value" ) ;
+            sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path uq:value_type_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unit associated with a reported result, estimate, distribution parameter, or uncertainty quantity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:uncertainty_unit_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Source of the value, such as measurement, calculation, supplier declaration, literature, or simulation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:value_source_value ] ;
+    sh:targetClass uq:quantityValue .
+
+uq:scenarioUncertainty a sh:NodeShape ;
+    rdfs:comment "Scenario-specific uncertainty context for structural, boundary, allocation, or modelling alternatives" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Reference to a data quality assessment that informs or justifies an uncertainty contribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:uncertainty_data_quality_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:uncertainty_statement_notes_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable name of a scenario" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:scenario_name_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:uncertainty_traceability_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Boundary, scope, allocation rule, or modelling choice represented by a scenario" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:scenario_boundary_value ],
+        [ sh:class uq:uncertaintyDistribution ;
+            sh:description "Probability distribution describing uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 5 ;
+            sh:path uq:probability_distribution ],
+        [ sh:datatype xsd:string ;
+            sh:description "Description of a scenario, including the structural or boundary choice it represents" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:scenario_description_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for a scenario used in uncertainty or robustness analysis" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:scenario_identifier_value ],
+        [ sh:class uq:uncertaintyInterval ;
+            sh:description "Coverage interval or other interval representation of uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 6 ;
+            sh:path uq:coverage_interval ],
+        [ sh:datatype xsd:float ;
+            sh:description "Optional probability or weight assigned to a scenario" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:scenario_probability_value ] ;
+    sh:targetClass uq:scenarioUncertainty .
+
+uq:sensitivityResult a sh:NodeShape ;
+    rdfs:comment "Sensitivity metric for identifying uncertainty drivers and quality hotspots" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Input, parameter, or component assessed in a sensitivity analysis" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:sensitivity_parameter_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Sensitivity metric, such as Sobol index, rank correlation, derivative, or elementary effect" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:sensitivity_metric_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:uncertainty_traceability_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a data quality assessment that informs or justifies an uncertainty contribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:uncertainty_data_quality_reference_value ],
+        [ sh:datatype xsd:boolean ;
+            sh:description "Whether the sensitivity result identifies a data quality or traceability hotspot" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:quality_hotspot_flag_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:uncertainty_statement_notes_value ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Rank of an input, parameter, or component according to sensitivity or uncertainty contribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:sensitivity_rank_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Numeric value of a sensitivity metric" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:sensitivity_value_value ] ;
+    sh:targetClass uq:sensitivityResult .
+
+uq:uncertaintyStatement a sh:NodeShape ;
+    rdfs:comment "Reusable statement describing uncertainty for a reported value, field, dataset, model output, or comparison" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Type of uncertainty being described" ;
+            sh:in ( "measurement_uncertainty" "parameter_uncertainty" "model_uncertainty" "scenario_uncertainty" "data_quality_derived_uncertainty" "comparison_uncertainty" "combined_uncertainty" ) ;
+            sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path uq:uncertainty_statement_type_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier of a specific value object when the target model gives value-level identifiers" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path uq:uncertainty_applies_to_value_identifier_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name, URI, or namespace of the external data model to which this uncertainty statement applies" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:uncertainty_applies_to_model_value ],
+        [ sh:class uq:uncertaintyDistribution ;
+            sh:description "Probability distribution describing uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 13 ;
+            sh:path uq:probability_distribution ],
+        [ sh:class uq:propagationAnalysis ;
+            sh:description "Propagation or numerical analysis used to derive an uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 16 ;
+            sh:path uq:propagation_analysis ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to supporting evidence such as a certificate, report, dataset, standard, or software record" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 19 ;
+            sh:path uq:uncertainty_evidence_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "JSONPath, XPath, RDF path, or other pointer to the value to which this uncertainty statement applies" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:uncertainty_applies_to_value_path_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a data quality assessment that informs or justifies an uncertainty contribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path uq:uncertainty_data_quality_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Slot or attribute in an external model to which this uncertainty statement applies" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:uncertainty_applies_to_slot_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Standard, guide, or protocol applied in the uncertainty evaluation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 20 ;
+            sh:path uq:uncertainty_standards_applied_value ],
+        [ sh:class uq:uncertaintyInterval ;
+            sh:description "Coverage interval or other interval representation of uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 14 ;
+            sh:path uq:coverage_interval ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Date and time when the uncertainty statement was issued or last updated" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:uncertainty_statement_date_value ],
+        [ sh:description "Lifecycle status of the uncertainty statement" ;
+            sh:in ( "draft" "reported" "revised" "superseded" "withdrawn" ) ;
+            sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path uq:uncertainty_statement_status_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier of the external record, object, dataset, or passport entry to which this uncertainty statement applies" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:uncertainty_applies_to_record_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:uncertainty_statement_label_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Class in an external model to which this uncertainty statement applies" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:uncertainty_applies_to_class_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for an uncertainty statement that can be referenced from another CE-RISE model" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:uncertainty_statement_identifier_value ],
+        [ sh:class uq:uncertaintyBudget ;
+            sh:description "Uncertainty budget used to calculate or justify an uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 15 ;
+            sh:path uq:uncertainty_budget ],
+        [ sh:class uq:quantityValue ;
+            sh:description "Reported value to which the uncertainty statement applies, when represented in this utility model" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 11 ;
+            sh:path uq:reported_value ],
+        [ sh:class uq:measurandSpecification ;
+            sh:description "Operational definition of the measurand or value of interest" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 12 ;
+            sh:path uq:measurand ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path uq:uncertainty_traceability_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 21 ;
+            sh:path uq:uncertainty_statement_notes_value ] ;
+    sh:targetClass uq:uncertaintyStatement .
+
+uq:propagationAnalysis a sh:NodeShape ;
+    rdfs:comment "Analysis used to propagate input uncertainties to an output uncertainty statement" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:class uq:uncertaintyInterval ;
+            sh:description "Output interval produced by propagation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 8 ;
+            sh:path uq:output_interval ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path uq:uncertainty_statement_notes_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Software, workflow, script, or computational environment used for uncertainty evaluation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:software_reference_value ],
+        [ sh:description "Method used to propagate uncertainty" ;
+            sh:in ( "analytical_gum" "monte_carlo" "bayesian_updating" "bootstrap" "sensitivity_analysis" "scenario_analysis" "hybrid" "not_evaluated" ) ;
+            sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path uq:propagation_method_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for an uncertainty propagation analysis" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:propagation_identifier_value ],
+        [ sh:class uq:sensitivityResult ;
+            sh:description "Sensitivity results identifying drivers of output uncertainty" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 9 ;
+            sh:path uq:sensitivity_results ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Random seed used for a stochastic simulation, when recorded" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:random_seed_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Equation, model expression, or model reference used for propagation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:model_equation_value ],
+        [ sh:class uq:scenarioUncertainty ;
+            sh:description "Scenario-specific uncertainty results or structural alternatives" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 10 ;
+            sh:path uq:scenario_uncertainties ],
+        [ sh:datatype xsd:string ;
+            sh:description "Standard, guide, or protocol applied in the uncertainty evaluation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path uq:uncertainty_standards_applied_value ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Number of simulation runs used in a numerical uncertainty propagation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:simulation_runs_value ],
+        [ sh:class uq:uncertaintyDistribution ;
+            sh:description "Output probability distribution produced by propagation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 7 ;
+            sh:path uq:output_distribution ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Date and time when an analysis was performed" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:analysis_timestamp_value ] ;
+    sh:targetClass uq:propagationAnalysis .
+
+uq:uncertaintyBudget a sh:NodeShape ;
+    rdfs:comment "Statement of uncertainty components, their calculation, and their combination" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Human-readable name of the uncertainty budget" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:uncertainty_budget_name_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path uq:uncertainty_statement_notes_value ],
+        [ sh:class uq:uncertaintyComponent ;
+            sh:description "Individual uncertainty components included in an uncertainty budget" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 5 ;
+            sh:path uq:uncertainty_components ],
+        [ sh:datatype xsd:float ;
+            sh:description "Combined standard uncertainty obtained from the individual uncertainty components" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:combined_standard_uncertainty_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Coverage factor used to obtain expanded uncertainty from combined standard uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path uq:coverage_factor_value ],
+        [ sh:class uq:uncertaintyInterval ;
+            sh:description "Coverage interval or other interval representation of uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 13 ;
+            sh:path uq:coverage_interval ],
+        [ sh:datatype xsd:float ;
+            sh:description "Standard uncertainty divided by the absolute value of the associated quantity value" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:relative_standard_uncertainty_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Coverage probability associated with a coverage interval or expanded uncertainty" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path uq:coverage_probability_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Effective degrees of freedom associated with the combined uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path uq:effective_degrees_of_freedom_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Measurement model, calculation model, statistical model, or equation relating inputs to the measurand" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:measurement_model_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Expanded uncertainty obtained by multiplying combined standard uncertainty by a coverage factor" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:expanded_uncertainty_value ],
+        [ sh:class uq:inputQuantity ;
+            sh:description "Input quantities in the measurement or calculation model" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 4 ;
+            sh:path uq:input_quantities ],
+        [ sh:class uq:correlation ;
+            sh:description "Correlations or covariances between input quantities or components" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 6 ;
+            sh:path uq:correlations ],
+        [ sh:datatype xsd:string ;
+            sh:description "Standard, guide, or protocol applied in the uncertainty evaluation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path uq:uncertainty_standards_applied_value ],
+        [ sh:description "Method used to combine uncertainty components" ;
+            sh:in ( "analytical_gum" "monte_carlo" "bayesian_updating" "bootstrap" "sensitivity_analysis" "scenario_analysis" "hybrid" "not_evaluated" ) ;
+            sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path uq:budget_method_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for an uncertainty budget" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:uncertainty_budget_identifier_value ] ;
+    sh:targetClass uq:uncertaintyBudget .
+
+uq:uncertaintyComponent a sh:NodeShape ;
+    rdfs:comment "Individual contribution to uncertainty from a source, input, bias, model discrepancy, scenario, or data quality limitation" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Reference to a data quality assessment that informs or justifies an uncertainty contribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path uq:uncertainty_data_quality_reference_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for an uncertainty component" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:uncertainty_component_identifier_value ],
+        [ sh:description "Category of uncertainty source" ;
+            sh:in ( "repeatability" "reproducibility" "calibration" "reference_material" "resolution" "environmental_condition" "sampling" "sample_preparation" "method_bias" "recovery" "drift" "model_discrepancy" "data_quality" "boundary_condition" "scenario_choice" "input_data" "software" "other" ) ;
+            sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path uq:uncertainty_source_category_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Multiplicative uncertainty factor used to express a plausible range around a positive quantity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path uq:uncertainty_component_factor_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Coverage factor used to obtain expanded uncertainty from combined standard uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:coverage_factor_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Description or name of the uncertainty source" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:uncertainty_source_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Degrees of freedom associated with an uncertainty component or estimate" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:degrees_of_freedom_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Coefficient of variation used as a relative uncertainty measure" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path uq:coefficient_of_variation_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Standard uncertainty expressed as a standard deviation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:standard_uncertainty_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Sensitivity coefficient describing how the measurand responds to this input or component" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:sensitivity_coefficient_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to a metrological traceability statement, chain, method, calibration, or boundary definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path uq:uncertainty_traceability_reference_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Standard uncertainty divided by the absolute value of the associated quantity value" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:relative_standard_uncertainty_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional notes about the uncertainty statement" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path uq:uncertainty_statement_notes_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to supporting evidence such as a certificate, report, dataset, standard, or software record" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path uq:uncertainty_evidence_reference_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Best estimate associated with an uncertainty component" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:component_estimate_value ],
+        [ sh:description "Type of evaluation used for the uncertainty component" ;
+            sh:in ( "type_a" "type_b" "mixed" "data_quality_derived" "expert_judgement" "scenario_based" ) ;
+            sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path uq:evaluation_type_value ],
+        [ sh:class uq:uncertaintyDistribution ;
+            sh:description "Probability distribution describing uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 12 ;
+            sh:path uq:probability_distribution ] ;
+    sh:targetClass uq:uncertaintyComponent .
+
+uq:uncertaintyInterval a sh:NodeShape ;
+    rdfs:comment "Interval representation of uncertainty, including coverage intervals and percentile intervals" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unit associated with a reported result, estimate, distribution parameter, or uncertainty quantity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:uncertainty_unit_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Coverage probability associated with a coverage interval or expanded uncertainty" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:coverage_probability_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Upper percentile used to define an interval, such as 95 for a 95th percentile bound" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+02 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:percentile_upper_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Upper bound of an uncertainty interval, coverage interval, or plausible range" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path uq:upper_bound_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Coverage factor used to obtain expanded uncertainty from combined standard uncertainty" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:coverage_factor_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Lower percentile used to define an interval, such as 5 for a 5th percentile bound" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+02 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:percentile_lower_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Lower bound of an uncertainty interval, coverage interval, or plausible range" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path uq:lower_bound_value ],
+        [ sh:description "Type of interval used to communicate uncertainty" ;
+            sh:in ( "coverage_interval" "expanded_uncertainty_interval" "percentile_interval" "credible_interval" "tolerance_interval" "decision_interval" ) ;
+            sh:maxCount 1 ;
+            sh:order 0 ;
+            sh:path uq:interval_type_value ] ;
+    sh:targetClass uq:uncertaintyInterval .
+
+uq:uncertaintyDistribution a sh:NodeShape ;
+    rdfs:comment "Probability distribution representing uncertainty for a measurand, input quantity, component, or model output" ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:float ;
+            sh:description "Upper support bound of the probability distribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path uq:distribution_upper_bound_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Median of the probability distribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path uq:distribution_median_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Notes about distribution choice, fitting, assumptions, or limitations" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path uq:distribution_notes_value ],
+        [ sh:class uq:distributionParameter ;
+            sh:description "Flexible distribution parameters, such as mean, standard deviation, minimum, maximum, shape, or scale" ;
+            sh:nodeKind sh:BlankNodeOrIRI ;
+            sh:order 2 ;
+            sh:path uq:distribution_parameters ],
+        [ sh:datatype xsd:string ;
+            sh:description "Identifier for a probability distribution used in the uncertainty evaluation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path uq:distribution_identifier_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Location parameter of the probability distribution when applicable" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path uq:distribution_location_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Scale parameter of the probability distribution when applicable" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path uq:distribution_scale_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Standard deviation of the probability distribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path uq:distribution_standard_deviation_value ],
+        [ sh:datatype xsd:string ;
+            sh:description "Reference to empirical samples or tabulated values used to define an empirical distribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path uq:empirical_values_reference_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Lower support bound of the probability distribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path uq:distribution_lower_bound_value ],
+        [ sh:datatype xsd:float ;
+            sh:description "Mean of the probability distribution" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path uq:distribution_mean_value ],
+        [ sh:description "Type of probability distribution used to describe uncertainty" ;
+            sh:in ( "normal" "lognormal" "triangular" "uniform" "rectangular" "student_t" "beta" "gamma" "exponential" "empirical" "discrete" "multimodal" "custom" ) ;
+            sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path uq:distribution_type_value ] ;
+    sh:targetClass uq:uncertaintyDistribution .
+
+

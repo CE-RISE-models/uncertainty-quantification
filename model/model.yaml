@@ -6,7 +6,7 @@ description: >
     probability distributions, propagation analyses, and comparison-relevant uncertainty metadata
     for CE-RISE Digital Product Passport and Digital Material Passport data models.
 license: CC BY-NC 4.0
-version: 0.0.2
+version: 0.0.3
 
 prefixes:
     linkml: https://w3id.org/linkml/
@@ -1068,7 +1068,6 @@ classes:
     UncertaintyQuantification:
         class_uri: uq:uncertaintyQuantification
         description: "Root container for uncertainty quantification statements and supporting records"
-        tree_root: true
         slots:
             - uncertainty_statements
             - uncertainty_budgets

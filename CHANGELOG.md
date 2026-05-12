@@ -2,6 +2,11 @@
 
 All notable changes to the CE-RISE Uncertainty Quantification Data Model will be documented in this file.
 
+## [0.0.3] - 2026-05-12
+
+### Fixed
+- Removed the root designation from the utility container class so the model can be imported as a supporting schema without adding an additional document root.
+
 ## [0.0.2] - 2026-05-12
 
 ### Fixed
